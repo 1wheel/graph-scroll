@@ -12,12 +12,11 @@ body{
 section {
   background: white;
   color: lightgray;
-  padding: 2em;
   font-family: monospace;
   height: 150px;
 }
 
-section .active{
+section.active{
   color: black;
 }
 
@@ -31,6 +30,10 @@ section .active{
   content: ".";
   display: block;
   width: 800px;
+}
+
+circle{
+  fill: steelblue;
 }
 
 </style>
@@ -64,16 +67,19 @@ section .active{
 
 var width = 800,
     oHeight = 100,
-    sHeight = 150
+    sHeight = 150,
+    scroll = gscroll();
 
 d3.select('#bot-padding')
-    .style('height', window.innerHeight - oHeight - sHeight + 'px')
+    .style('height', window.innerHeight - oHeight - sHeight - 100 + 'px')
 
 
 var svg = d3.select('#overlay')
   .append('svg')
     .attr({width: 800, height: 100})
 
+
+svg.append('rect').attr({width: width, height: oHeight})
 svg.append('circle')
     .attr({cx: 50, cy: 50, r: 10})
 
