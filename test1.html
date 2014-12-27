@@ -50,10 +50,12 @@ circle{
   <h1>top left</h1>
   some text about the top right
 </section>
+
 <section style="text-align:center;">
   <h1>bottom right</h1>
   some text about the top right
 </section>
+
 <section style="text-align:center;">
   <h1>middle</h1>
   some text about the top right
@@ -68,7 +70,8 @@ circle{
 var width = 800,
     oHeight = 100,
     sHeight = 150,
-    scroll = gscroll();
+    scroll = gscroll(),
+    r = 10
 
 d3.select('#bot-padding')
     .style('height', window.innerHeight - oHeight - sHeight - 100 + 'px')
@@ -80,7 +83,26 @@ var svg = d3.select('#overlay')
 
 
 svg.append('rect').attr({width: width, height: oHeight})
-svg.append('circle')
-    .attr({cx: 50, cy: 50, r: 10})
+var circle = svg.append('circle')
+    .attr({cx: 0, cy: 0, r: r})
+
+scroll.on('active', function(i){
+  var pos
+  switch (i) {
+    case 0: 
+      pos = {cx: r,           cy: oHeight - r};
+    break;
+    case 1: 
+      pos = {cx: r,           cy: r};
+    break;
+    case 2: 
+      pos = {cx: width - r,   cy: oHeight - r};
+    break;
+    case 3: 
+      pos = {cx: width/2,     cy: oHeight/2};
+  }
+  console.log(pos)
+  circle.transition().attr(pos)
+})
 
 </script>
