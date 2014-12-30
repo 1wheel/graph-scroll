@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<style>
+
+body{
+  max-width: 800px;
+  margin: 0px auto;
+}
+
+section {
+  background: white;
+  color: lightgray;
+  font-family: monospace;
+  height: 150px;
+}
+
+section.active{
+  color: black;
+}
+
+#overlay{
+  position: fixed;
+  height: 150px;
+}
+
+#overlay-space{
+  height: 150px;
+  content: ".";
+  display: block;
+  width: 800px;
+}
+
+circle{
+  fill: steelblue;
+}
+
+</style>
+
+<div id='overlay'></div>
+<div id='overlay-space'></div>
+
+<section style="text-align:center;">
+  <h1>top right</h1>
+  some text about the top right
+</section>
+
+<section style="text-align:center;">
+  <h1>top left</h1>
+  some text about the top right
+</section>
+
+<section style="text-align:center;">
+  <h1>bottom right</h1>
+  some text about the top right
+</section>
+
+<section style="text-align:center;">
+  <h1>middle</h1>
+  some text about the top right
+</section>
+
+<div id='bot-padding'></div>
+
+<script src="d3.v3.js"></script>
+<script src="gscroll.js"></script>
+<script>
+
+var width = 800,
+    oHeight = 150,
+    sHeight = 150,
+    scroll = gscroll(),
+    r = 40
+
+d3.select('#bot-padding')
+    .style('height', window.innerHeight - oHeight - sHeight - 100 + 'px')
+
+
+var svg = d3.select('#overlay')
+  .append('svg')
+    .attr({width: 800, height: oHeight})
+
+
+svg.append('rect').attr({width: width, height: oHeight}).style('fill', 'lightgray')
+var circle = svg.append('circle')
+    .attr({cx: 0, cy: 0, r: r})
+
+scroll.on('active', function(i){
+  var pos
+  switch (i) {
+    case 0: 
+      pos = {cx: r,         cy: oHeight - r};
+    break;
+    case 1: 
+      pos = {cx: r,         cy: r};
+    break;
+    case 2: 
+      pos = {cx: width - r, cy: oHeight - r};
+    break;
+    case 3: 
+      pos = {cx: width/2,   cy: oHeight/2};
+  }
+
+  circle.transition().duration(1000)
+      .attr(pos)
+})
+
+</script>
