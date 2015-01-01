@@ -11,18 +11,20 @@ body{
 
 section {
   background: white;
-  color: lightgray;
   font-family: monospace;
   height: 150px;
+  opacity: .1;
 }
 
 section.active{
-  color: black;
+  opacity: 1;
 }
 
 #overlay{
   position: fixed;
   height: 150px;
+  border-bottom: lightgray 1px solid;
+  z-index: 1;
 }
 
 #overlay-space{
@@ -34,6 +36,8 @@ section.active{
 
 circle{
   fill: steelblue;
+  fill-opacity: .9;
+  stroke: darkgray;
 }
 
 </style>
@@ -93,7 +97,8 @@ var svg = d3.select('#overlay')
     .attr({width: 800, height: oHeight})
 
 
-svg.append('rect').attr({width: width, height: oHeight}).style('fill', 'lightgray')
+svg.append('rect').attr({width: width, height: oHeight})
+    .style('fill', 'rgb(250, 248, 248)')
 
 var circles = svg.selectAll('circle')
     .data(circleArrays[0]).enter()
