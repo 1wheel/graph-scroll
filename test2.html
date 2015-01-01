@@ -71,7 +71,18 @@ var width = 800,
     oHeight = 150,
     sHeight = 150,
     scroll = gscroll(),
-    r = 40
+    r = 40,
+    n = 150;
+
+circleArrays = []
+circleArrays[0] = d3.range(n).map(function(){
+  return Math.random()*150 })
+circleArrays[1] = d3.range(n).map(function(d){
+  return oHeight/n*d + Math.random()*40 -5 })
+circleArrays[2] = d3.range(n).map(function(d){
+  return oHeight/n*d })
+circleArrays[3] = d3.range(n).map(function(d){
+  return n - oHeight/n*d + Math.random()*40 })
 
 d3.select('#bot-padding')
     .style('height', window.innerHeight - oHeight - sHeight - 100 + 'px')
@@ -83,27 +94,19 @@ var svg = d3.select('#overlay')
 
 
 svg.append('rect').attr({width: width, height: oHeight}).style('fill', 'lightgray')
-var circle = svg.append('circle')
-    .attr({cx: 0, cy: 0, r: r})
+
+var circles = svg.selectAll('circle')
+    .data(circleArrays[0]).enter()
+  .append('circle')
+    .attr('r', 2)
+    .attr('cx', function(d, i){ return i })
+    .attr('cy', function(d, i){ return d })
 
 scroll.on('active', function(i){
-  var pos
-  switch (i) {
-    case 0: 
-      pos = {cx: r,         cy: oHeight - r};
-    break;
-    case 1: 
-      pos = {cx: r,         cy: r};
-    break;
-    case 2: 
-      pos = {cx: width - r, cy: oHeight - r};
-    break;
-    case 3: 
-      pos = {cx: width/2,   cy: oHeight/2};
-  }
 
-  circle.transition().duration(1000)
-      .attr(pos)
+  circles.data(circleArrays[i])
+    .transition().duration(1000)
+      .attr('cy', function(d){ return d })
 })
 
 </script>
