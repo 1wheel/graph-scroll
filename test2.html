@@ -91,8 +91,8 @@ circleArrays[3] = d3.range(n).map(function(d){
 
 var rectAttrs = []
 rectAttrs.push(function(selection){
-  selection
-    .attr('fill', function(d){ return d })
+  d3.select(selection.node())
+    .attr('fill', function(d, i){ return 'url(#lg-' + i + ')' })
     .attr('x', 0)
     .attr('width', sWidth)
     .attr('y', function(d, i){ return (colors.length - 1 - i)*sHeight/colors.length })
@@ -101,10 +101,10 @@ rectAttrs.push(function(selection){
 rectAttrs.push(function(selection){
   selection
     .attr('fill', function(d){ return d })
-    .attr('x', function(d, i){ return i*sWidth/colors.length })
-    .attr('width', sWidth/colors.length)
-    .attr('y', 0)
-    .attr('height', sHeight)
+    .attr('x', 0)
+    .attr('width', sWidth)
+    .attr('y', function(d, i){ return (colors.length - 1 - i)*sHeight/colors.length })
+    .attr('height', sHeight/colors.length)
 })
 rectAttrs.push(function(selection){
   selection
@@ -123,6 +123,23 @@ d3.select('#bot-padding')
 var svg = d3.select('#overlay')
   .append('svg')
     .attr({width: 800, height: oHeight})
+
+var defs = svg.append('defs')
+var gradScale = d3.scale.linear()
+    .domain([0, colors.length])
+    .range([colors[0], colors[colors.length - 1]])
+defs.selectAll('linearGradient')
+    .data(colors).enter()
+  .append('linearGradient')
+    // .attr({x1: 0, x2: 1, y1: 0, y2: 1})
+    .each(function(d, i){
+      d3.select(this).attr('id', 'lg-' + i)
+        .append('stop')
+          .attr({'stop-color': gradScale(i), offset: '0%'})
+      d3.select(this).append('stop')
+          .attr({'stop-color': gradScale(i + 1), offset: '100%'})
+    })
+
 
 svg.append('rect').attr({width: width, height: oHeight})
     .style('fill', 'rgb(250, 248, 248)')
@@ -148,6 +165,10 @@ scroll.on('active', function(i){
   circles.data(circleArrays[i])
     .transition().duration(1000)
       .attr('cy', function(d){ return d })
+
+  rects
+    .transition().duration(1000)
+      .call(rectAttrs[i])
 })
 
 </script>
