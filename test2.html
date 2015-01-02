@@ -91,8 +91,10 @@ circleArrays[3] = d3.range(n).map(function(d){
 
 var rectAttrs = []
 rectAttrs.push(function(selection){
-  d3.select(selection.node())
-    .attr('fill', function(d, i){ return 'url(#lg-' + i + ')' })
+  selection
+    .attr('fill', function(d, i){ return 'url(#lg' + i + ')' })
+
+  selection
     .attr('x', 0)
     .attr('width', sWidth)
     .attr('y', function(d, i){ return (colors.length - 1 - i)*sHeight/colors.length })
@@ -131,9 +133,9 @@ var gradScale = d3.scale.linear()
 defs.selectAll('linearGradient')
     .data(colors).enter()
   .append('linearGradient')
-    // .attr({x1: 0, x2: 1, y1: 0, y2: 1})
+    .attr({x1: 0, x2: 0, y1: 1, y2: 0})
     .each(function(d, i){
-      d3.select(this).attr('id', 'lg-' + i)
+      d3.select(this).attr('id', 'lg' + i)
         .append('stop')
           .attr({'stop-color': gradScale(i), offset: '0%'})
       d3.select(this).append('stop')
