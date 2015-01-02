@@ -36,8 +36,8 @@ section.active{
 
 circle{
   fill: steelblue;
-  fill-opacity: .9;
-  stroke: darkgray;
+  fill-opacity: 0;
+  stroke: orange;
 }
 
 </style>
@@ -83,11 +83,11 @@ circleArrays = []
 circleArrays[0] = d3.range(n).map(function(){
   return Math.random()*sHeight })
 circleArrays[1] = d3.range(n).map(function(d){
-  return sHeight/n*d + Math.random()*40 -5 })
+  return sHeight/n*d + Math.random()*40 - 20 })
 circleArrays[2] = d3.range(n).map(function(d){
-  return sHeight/n*d })
+  return sHeight/n*d + Math.random()*20 - 10 })
 circleArrays[3] = d3.range(n).map(function(d){
-  return n - sHeight/n*d + Math.random()*40 })
+  return sHeight - sHeight/n*d + Math.random()*40 })
 
 d3.select('#bot-padding')
     .style('height', window.innerHeight - oHeight - sHeight - 100 + 'px')
@@ -105,6 +105,13 @@ var scatterG = svg.append('g')
     .attr('transform', 'translate(' + 50 + ',' + (oHeight - sHeight)/2 + ')')
 
 var rects = scatterG.selectAll('rect')
+    .data(colors).enter()
+  .append('rect')
+    .attr('fill', function(d){ return d })
+    .attr('width', sWidth/colors.length)
+    .attr('x', function(d, i){ return i*sWidth/colors.length })
+    .attr('y', 0)
+    .attr('height', sHeight)
 
 var circles = scatterG.selectAll('circle')
     .data(circleArrays[0]).enter()
