@@ -89,6 +89,33 @@ circleArrays[2] = d3.range(n).map(function(d){
 circleArrays[3] = d3.range(n).map(function(d){
   return sHeight - sHeight/n*d + Math.random()*40 })
 
+var rectAttrs = []
+rectAttrs.push(function(selection){
+  selection
+    .attr('fill', function(d){ return d })
+    .attr('x', 0)
+    .attr('width', sWidth)
+    .attr('y', function(d, i){ return (colors.length - 1 - i)*sHeight/colors.length })
+    .attr('height', sHeight/colors.length)
+})
+rectAttrs.push(function(selection){
+  selection
+    .attr('fill', function(d){ return d })
+    .attr('x', function(d, i){ return i*sWidth/colors.length })
+    .attr('width', sWidth/colors.length)
+    .attr('y', 0)
+    .attr('height', sHeight)
+})
+rectAttrs.push(function(selection){
+  selection
+    .attr('fill', function(d){ return d })
+    .attr('x', function(d, i){ return i*sWidth/colors.length })
+    .attr('width', sWidth/colors.length)
+    .attr('y', 0)
+    .attr('height', sHeight)
+})
+
+
 d3.select('#bot-padding')
     .style('height', window.innerHeight - oHeight - sHeight - 100 + 'px')
 
@@ -107,11 +134,7 @@ var scatterG = svg.append('g')
 var rects = scatterG.selectAll('rect')
     .data(colors).enter()
   .append('rect')
-    .attr('fill', function(d){ return d })
-    .attr('width', sWidth/colors.length)
-    .attr('x', function(d, i){ return i*sWidth/colors.length })
-    .attr('y', 0)
-    .attr('height', sHeight)
+    .call(rectAttrs[1])
 
 var circles = scatterG.selectAll('circle')
     .data(circleArrays[0]).enter()
