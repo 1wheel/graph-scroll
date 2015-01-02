@@ -73,20 +73,21 @@ circle{
 
 var width = 800,
     oHeight = 150,
-    sHeight = 150,
+    sHeight = 100,
+    sWidth = 150,
+    colors = ["#f2f0f7","#cbc9e2","#9e9ac8","#756bb1","#54278f"],
     scroll = gscroll(),
-    r = 40,
     n = 150;
 
 circleArrays = []
 circleArrays[0] = d3.range(n).map(function(){
-  return Math.random()*150 })
+  return Math.random()*sHeight })
 circleArrays[1] = d3.range(n).map(function(d){
-  return oHeight/n*d + Math.random()*40 -5 })
+  return sHeight/n*d + Math.random()*40 -5 })
 circleArrays[2] = d3.range(n).map(function(d){
-  return oHeight/n*d })
+  return sHeight/n*d })
 circleArrays[3] = d3.range(n).map(function(d){
-  return n - oHeight/n*d + Math.random()*40 })
+  return n - sHeight/n*d + Math.random()*40 })
 
 d3.select('#bot-padding')
     .style('height', window.innerHeight - oHeight - sHeight - 100 + 'px')
@@ -96,11 +97,16 @@ var svg = d3.select('#overlay')
   .append('svg')
     .attr({width: 800, height: oHeight})
 
-
 svg.append('rect').attr({width: width, height: oHeight})
     .style('fill', 'rgb(250, 248, 248)')
 
-var circles = svg.selectAll('circle')
+
+var scatterG = svg.append('g')
+    .attr('transform', 'translate(' + 50 + ',' + (oHeight - sHeight)/2 + ')')
+
+var rects = scatterG.selectAll('rect')
+
+var circles = scatterG.selectAll('circle')
     .data(circleArrays[0]).enter()
   .append('circle')
     .attr('r', 2)
