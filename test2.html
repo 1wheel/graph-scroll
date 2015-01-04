@@ -7,10 +7,10 @@
 body{
   max-width: 800px;
   margin: 0px auto;
+  background-color: rgb(250, 248, 248);
 }
 
 section {
-  background: white;
   font-family: monospace;
   height: 150px;
   opacity: .1;
@@ -184,7 +184,7 @@ svg.append('defs').selectAll('linearGradient')
 
 //backing rect
 svg.append('rect').attr({width: width, height: oHeight})
-    .style('fill', 'rgb(250, 248, 248)')
+    .style('fill', 'white')
 
 //scatter plot
 var scatterG = svg.append('g')
