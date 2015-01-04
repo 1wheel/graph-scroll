@@ -207,14 +207,16 @@ var circles = scatterG.selectAll('circle')
     .attr('cy', circleY)
 
 //map
-mapG.append('clip-path').attr('id', 'clipPath')
+d3.select('defs').append('clipPath').attr('id', 'mapclip')
+  .append('rect')
     .attr({width: sWidth, height: sHeight})
 var points = d3.range(n).map(function(d){
   return {x: Math.random()*sWidth, y: Math.random()*sHeight} })
-mapG.append('g').attr('clipPath', 'url(#clipPath)')
+mapG.append('g')
     .selectAll('area')
     .data(d3.geom.voronoi().x(ƒ('x')).y(ƒ('y'))(points)).enter()
   .append('path').classed('area', true)
+.attr('clip-path', 'url(#mapclip)')
     .attr('d', function(d){
       return 'M' + d.join('L') })
 mapG.selectAll('circle')
