@@ -39,6 +39,10 @@ circle{
   stroke: black;
 }
 
+.area{
+  stroke: white;
+}
+
 </style>
 
 <div id='overlay'></div>
@@ -87,10 +91,11 @@ circle{
 <script src="gscroll.js"></script>
 <script>
 
-var width = 800,
+var width = 750,
     oHeight = 150,
     sHeight = 100,
     sWidth = 150,
+
     colors = ["#f2f0f7","#cbc9e2","#9e9ac8","#756bb1","#54278f"],
     scroll = gscroll(),
     n = 50,
@@ -197,6 +202,24 @@ var circles = scatterG.selectAll('circle')
     .attr('cx', function(d, i){ return circleX(i) })
     .attr('cy', circleY)
 
+
+var mapG = svg.append('g')
+    .attr('transform', 'translate(' + (width - 50 - sWidth) + ',' + (oHeight - sHeight)/2 + ')')
+var points = d3.range(n).map(function(d){
+  return {x: Math.random()*sWidth, y: Math.random()*sHeight} })
+mapG.selectAll('circle')
+    .data(points).enter()
+  .append('circle')
+    .attr('r', 2)
+    .attr('cx', ƒ('x'))
+    .attr('cy', ƒ('y'))
+var voronoi = d3.geom.voronoi().x(ƒ('x')).y(ƒ('y'))
+mapG.selectAll('area')
+    .data(voronoi(points)).enter()
+  .append('path').classed('area', true)
+    .attr('d', function(d){
+      return 'M' + d.join('L') })
+
 scroll.on('active', function(i){
   var curValues = values[steps[i].values]
   var curRect = rectAttrs[steps[i].scale]
@@ -212,9 +235,9 @@ scroll.on('active', function(i){
     .transition().duration(1000)
       .call(curRect)
 
-  d3.selectAll('area').data(curValues)
+  d3.selectAll('.area').data(curValues)
     .transition().duration(1000)
-      .attr('fill', function(d){ return curScale(d) })
+      .attr('fill', function(d, i){ return curScale(curValues[i]) })
 
   svg.selectAll('stop')
     .transition().duration(1000)
