@@ -46,22 +46,39 @@ circle{
 <div id='overlay-space'></div>
 
 <section style="text-align:center;">
+  
+  intro about maps?
+
   <h1>Linear Scale</h1>
+  Coloring maps can be tricky! Here is some advice on it. We start with an array of places, coloring them based on their locations:
+
+      `placePaths.style('fill', function(d){ return color(x.value) })`
+
+  `d3.scale.linear` uses linear interpolation to transform a value the domain into the range. This isn't a method
+</section>
+
+<section style="text-align:center;">
+  <h1>Quantize</h1>
   some text about the top right
 </section>
 
 <section style="text-align:center;">
-  <h1>top left</h1>
+  <h1>Doesn't work great with outliers</h1>
   some text about the top right
 </section>
 
 <section style="text-align:center;">
-  <h1>bottom right</h1>
+  <h1>Quantile</h1>
   some text about the top right
 </section>
 
 <section style="text-align:center;">
-  <h1>middle</h1>
+  <h1>Might distort underlying date</h1>
+  some text about the top right
+</section>
+
+<section style="text-align:center;">
+  <h1>Janx natural breaks</h1>
   some text about the top right
 </section>
 
