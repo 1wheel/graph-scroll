@@ -97,38 +97,58 @@ var width = 800,
     n = 150,
     ƒ = function(s){ return function(o){ return o[s] } };
 
-circleArrays = []
-circleArrays[0] = d3.range(n).map(function(){
-  return Math.random()*sHeight })
-circleArrays[1] = d3.range(n).map(function(d){
-  return sHeight/n*d + Math.random()*40 - 20 })
-circleArrays[2] = d3.range(n).map(function(d){
-  return sHeight/n*d + Math.random()*20 - 10 })
-circleArrays[3] = d3.range(n).map(function(d){
-  return sHeight - sHeight/n*d + Math.random()*40 })
+var steps = [
+  {scale: 'gradient', values: 'start'},
+  {scale: 'quantize', values: 'start'},
+  {scale: 'quantize', values: 'quantizeFlaw'},
+  {scale: 'quantile', values: 'start'},
+  {scale: 'quantile', values: 'quantileFlaw'},
+  {scale: 'janx',     values: 'quantileFlaw'}
+]
 
-var rectAttrs = []
-rectAttrs.push(function(selection){
+var values = {}
+values.start = d3.range(n).map(function(){
+  return Math.random()*sHeight })
+values.quantizeFlaw = d3.range(n).map(function(d){
+  return sHeight/n*d + Math.random()*40 - 20 })
+values.quantileFlaw = d3.range(n).map(function(d){
+  return sHeight/n*d + Math.random()*20 - 10 })
+
+var rectAttrs = {}
+rectAttrs.gradient = function(selection){
   selection
     .attr('x', 0)
     .attr('width', sWidth)
     .attr('y', function(d, i){ return (colors.length - 1 - i)*sHeight/colors.length })
     .attr('height', sHeight/colors.length)
-})
-rectAttrs.push(function(selection){
+}
+rectAttrs.quantize = function(selection){
   selection
     .attr('x', 0)
     .attr('width', sWidth)
     .attr('y', function(d, i){ return (colors.length - 1 - i)*sHeight/colors.length })
     .attr('height', sHeight/colors.length)
-})
-rectAttrs.push(function(selection){
+}
+rectAttrs.quantile = function(selection){
   selection
     .attr('x', function(d, i){ return i*sWidth/colors.length })
     .attr('width', sWidth/colors.length)
     .attr('y', 0)
     .attr('height', sHeight)
-})
+}
+rectAttrs.janx = function(selection){
+  selection
+    .attr('x', function(d, i){ return i*sWidth/colors.length })
+    .attr('width', sWidth/colors.length)
+    .attr('y', 0)
+    .attr('height', sHeight)
+}
+
+var scales = {}
+scales.gradient = d3.scale.linear().range([colors[0], colors[colors.length - 1]])
+scales.quantize = d3.scale.quantize().range(colors)
+scales.quantile = d3.scale.quantile().range(colors)
+scales.janx = d3.scale.quantize().range(colors)
 
 
 d3.select('#bot-padding')
@@ -168,24 +188,33 @@ var rects = scatterG.selectAll('rect')
     .data(colors).enter()
   .append('rect')
     .attr('fill', function(d, i){ return 'url(#lg' + i + ')' })
-    .call(rectAttrs[1])
+    .call(rectAttrs.gradient)
 
 var circles = scatterG.selectAll('circle')
-    .data(circleArrays[0]).enter()
+    .data(values.start).enter()
   .append('circle')
     .attr('r', 2)
     .attr('cx', function(d, i){ return i })
     .attr('cy', function(d, i){ return d })
 
 scroll.on('active', function(i){
+  var curValues = values[steps[i].values]
+  var curRect = rectAttrs[steps[i].scale]
+  var curScale = scales[steps[i].scale]
 
-  circles.data(circleArrays[i])
+  curScale.domain(curValues)
+
+  circles.data(curValues)
     .transition().duration(1000)
       .attr('cy', function(d){ return d })
 
   rects
     .transition().duration(1000)
-      .call(rectAttrs[i])
+      .call(curRect)
+
+  d3.selectAll('area').data(curValues)
+    .transition().duration(1000)
+      .attr('fill', function(d){ return curScale(d) })
 
   svg.selectAll('stop')
     .transition().duration(1000)
