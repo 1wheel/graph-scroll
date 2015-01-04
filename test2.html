@@ -208,26 +208,19 @@ var mapG = svg.append('g')
     .attr('transform', 'translate(' + (width - 50 - sWidth) + ',' + (oHeight - sHeight)/2 + ')')
 
 d3.select('defs').append('clipPath').attr('id', 'mapclip')
-  .append('rect')
-    .attr({width: sWidth, height: sHeight})
+  .append('rect').attr({width: sWidth, height: sHeight})
 var points = []
 while (points.length < n){
-  var p = {x: Math.random()*sWidth, y: Math.random()*sHeight}
+  var p = [Math.random()*sWidth, Math.random()*sHeight]
   if (points.every(function(d){ return dist(p, d) > 12 })) points.push(p)
 }
 mapG.append('g')
     .selectAll('area')
-    .data(d3.geom.voronoi().x(ƒ('x')).y(ƒ('y'))(points)).enter()
+    .data(d3.geom.voronoi()(points)).enter()
   .append('path').classed('area', true)
 .attr('clip-path', 'url(#mapclip)')
     .attr('d', function(d){
       return 'M' + d.join('L') })
-mapG.selectAll('circle')
-    .data(points).enter()
-  .append('circle')
-    .attr('r', 2)
-    .attr('cx', ƒ('x'))
-    .attr('cy', ƒ('y'))
 
 var curValues, curRect, curScaleStr, curScale
 scroll.on('active', function(i){
@@ -261,7 +254,7 @@ scroll.on('active', function(i){
 
 
 function dist(a, b){
-  return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2))
+  return Math.sqrt(Math.pow(a[0] - b[0], 2) + Math.pow(a[1] - b[1], 2))
 }
 
 
