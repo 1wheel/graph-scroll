@@ -220,12 +220,17 @@ mapG.selectAll('area')
     .attr('d', function(d){
       return 'M' + d.join('L') })
 
+var curValues, curRect, curScaleStr, curScale
 scroll.on('active', function(i){
-  var curValues = values[steps[i].values]
-  var curRect = rectAttrs[steps[i].scale]
-  var curScale = scales[steps[i].scale]
+  curValues = values[steps[i].values]
+  curScaleStr = steps[i].scale
+  curRect = rectAttrs[curScaleStr]
+  curScale = scales[curScaleStr]
 
-  curScale.domain(curValues)
+  if (curScaleStr === 'gradient') curScale.domain(d3.extent(curValues))
+  if (curScaleStr === 'quantize') curScale.domain(d3.extent(curValues))
+  if (curScaleStr === 'quantile') curScale.domain(curValues)
+  if (curScaleStr === 'janx')     curScale.domain(curValues)
 
   circles.data(curValues)
     .transition().duration(1000)
