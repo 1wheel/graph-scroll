@@ -46,7 +46,7 @@ circle{
 <div id='overlay-space'></div>
 
 <section style="text-align:center;">
-  <h1>top right</h1>
+  <h1>Linear Scale</h1>
   some text about the top right
 </section>
 
@@ -77,7 +77,8 @@ var width = 800,
     sWidth = 150,
     colors = ["#f2f0f7","#cbc9e2","#9e9ac8","#756bb1","#54278f"],
     scroll = gscroll(),
-    n = 150;
+    n = 150,
+    ƒ = function(s){ return function(o){ return o[s] } };
 
 circleArrays = []
 circleArrays[0] = d3.range(n).map(function(){
@@ -92,8 +93,12 @@ circleArrays[3] = d3.range(n).map(function(d){
 var rectAttrs = []
 rectAttrs.push(function(selection){
   selection
-    .attr('fill', function(d, i){ return 'url(#lg' + i + ')' })
-
+    .attr('x', 0)
+    .attr('width', sWidth)
+    .attr('y', function(d, i){ return (colors.length - 1 - i)*sHeight/colors.length })
+    .attr('height', sHeight/colors.length)
+})
+rectAttrs.push(function(selection){
   selection
     .attr('x', 0)
     .attr('width', sWidth)
@@ -102,15 +107,6 @@ rectAttrs.push(function(selection){
 })
 rectAttrs.push(function(selection){
   selection
-    .attr('fill', function(d){ return d })
-    .attr('x', 0)
-    .attr('width', sWidth)
-    .attr('y', function(d, i){ return (colors.length - 1 - i)*sHeight/colors.length })
-    .attr('height', sHeight/colors.length)
-})
-rectAttrs.push(function(selection){
-  selection
-    .attr('fill', function(d){ return d })
     .attr('x', function(d, i){ return i*sWidth/colors.length })
     .attr('width', sWidth/colors.length)
     .attr('y', 0)
@@ -126,20 +122,21 @@ var svg = d3.select('#overlay')
   .append('svg')
     .attr({width: 800, height: oHeight})
 
-var defs = svg.append('defs')
 var gradScale = d3.scale.linear()
     .domain([0, colors.length])
     .range([colors[0], colors[colors.length - 1]])
-defs.selectAll('linearGradient')
+svg.append('defs').selectAll('linearGradient')
     .data(colors).enter()
   .append('linearGradient')
     .attr({x1: 0, x2: 0, y1: 1, y2: 0})
     .each(function(d, i){
       d3.select(this).attr('id', 'lg' + i)
         .append('stop')
+          .datum({gradColor: gradScale(i), discColor: colors[i]})
           .attr({'stop-color': gradScale(i), offset: '0%'})
       d3.select(this).append('stop')
           .attr({'stop-color': gradScale(i + 1), offset: '100%'})
+          .datum({gradColor: gradScale(i + 1), discColor: colors[i]})
     })
 
 
@@ -153,6 +150,7 @@ var scatterG = svg.append('g')
 var rects = scatterG.selectAll('rect')
     .data(colors).enter()
   .append('rect')
+    .attr('fill', function(d, i){ return 'url(#lg' + i + ')' })
     .call(rectAttrs[1])
 
 var circles = scatterG.selectAll('circle')
@@ -171,6 +169,11 @@ scroll.on('active', function(i){
   rects
     .transition().duration(1000)
       .call(rectAttrs[i])
+
+  svg.selectAll('stop')
+    .transition().duration(1000)
+      .attr('stop-color', ƒ(i ? 'discColor' : 'gradColor'))
+
 })
 
 </script>
