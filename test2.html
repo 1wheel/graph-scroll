@@ -182,10 +182,14 @@ svg.append('defs').selectAll('linearGradient')
           .datum({gradColor: gradScale(i + 1), discColor: colors[i]})
     })
 
+//backing rect
 svg.append('rect').attr({width: width, height: oHeight})
     .style('fill', 'rgb(250, 248, 248)')
 
+var mapG = svg.append('g')
+    .attr('transform', 'translate(' + (width - 50 - sWidth) + ',' + (oHeight - sHeight)/2 + ')')
 
+//scatter plot
 var scatterG = svg.append('g')
     .attr('transform', 'translate(' + 50 + ',' + (oHeight - sHeight)/2 + ')')
 
@@ -202,23 +206,23 @@ var circles = scatterG.selectAll('circle')
     .attr('cx', function(d, i){ return circleX(i) })
     .attr('cy', circleY)
 
-
-var mapG = svg.append('g')
-    .attr('transform', 'translate(' + (width - 50 - sWidth) + ',' + (oHeight - sHeight)/2 + ')')
+//map
+mapG.append('clip-path').attr('id', 'clipPath')
+    .attr({width: sWidth, height: sHeight})
 var points = d3.range(n).map(function(d){
   return {x: Math.random()*sWidth, y: Math.random()*sHeight} })
+mapG.append('g').attr('clipPath', 'url(#clipPath)')
+    .selectAll('area')
+    .data(d3.geom.voronoi().x(ƒ('x')).y(ƒ('y'))(points)).enter()
+  .append('path').classed('area', true)
+    .attr('d', function(d){
+      return 'M' + d.join('L') })
 mapG.selectAll('circle')
     .data(points).enter()
   .append('circle')
     .attr('r', 2)
     .attr('cx', ƒ('x'))
     .attr('cy', ƒ('y'))
-var voronoi = d3.geom.voronoi().x(ƒ('x')).y(ƒ('y'))
-mapG.selectAll('area')
-    .data(voronoi(points)).enter()
-  .append('path').classed('area', true)
-    .attr('d', function(d){
-      return 'M' + d.join('L') })
 
 var curValues, curRect, curScaleStr, curScale
 scroll.on('active', function(i){
@@ -227,8 +231,6 @@ scroll.on('active', function(i){
   curRect = rectAttrs[curScaleStr]
   curScale = scales[curScaleStr]
 
-  if (curScaleStr === 'gradient') curScale.domain(d3.extent(curValues))
-  if (curScaleStr === 'quantize') curScale.domain(d3.extent(curValues))
   if (curScaleStr === 'quantile') curScale.domain(curValues)
   if (curScaleStr === 'janx')     curScale.domain(curValues)
 
