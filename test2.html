@@ -5,7 +5,7 @@
 <style>
 
 body{
-  max-width: 800px;
+  max-width: 750px;
   margin: 0px auto;
   background-color: rgb(250, 248, 248);
 }
@@ -31,7 +31,18 @@ section.active{
   height: 150px;
   content: ".";
   display: block;
-  width: 800px;
+  width: 750px;
+}
+
+#color-code{
+  width: 300px;
+  position: fixed;
+  top: 0px;
+  left: 200px;
+}
+
+#color-code div{
+  display: none;
 }
 
 circle{
@@ -45,7 +56,31 @@ circle{
 
 </style>
 
-<div id='overlay'></div>
+<div id='overlay'>
+  <svg></svg>
+  <div id='color-code'>
+    <div id='gradient'>
+      var colorScale = d3.scale.linear()
+          .domain(d3.extent(points, ƒ('value')))
+          .range(['#f2f0f7', '#54278f'])
+    </div>
+    <div id='quantize'>
+      var colorScale = d3.scale.quantize()
+          .domain(d3.extent(points, ƒ('value')))
+          .range(["#f2f0f7","#cbc9e2","#9e9ac8","#756bb1","#54278f"]])
+    </div>
+    <div id='quantile'>
+      var colorScale = d3.scale.quantile()
+          .domain(_.sortBy(points, ƒ('value')))
+          .range(["#f2f0f7","#cbc9e2","#9e9ac8","#756bb1","#54278f"]])
+    </div>
+    <div id='janx'>
+      var colorScale = d3.scale.quantile()
+          .domain(_.sortBy(points, ƒ('value')))
+          .range(["#f2f0f7","#cbc9e2","#9e9ac8","#756bb1","#54278f"]])
+    </div>
+  </div>
+</div>
 <div id='overlay-space'></div>
 
 <section style="text-align:center;">
@@ -156,13 +191,11 @@ scales.quantize = d3.scale.quantize().range(colors)
 scales.quantile = d3.scale.quantile().range(colors)
 scales.janx = d3.scale.quantize().range(colors)
 
-
 d3.select('#bot-padding')
     .style('height', window.innerHeight - oHeight - sHeight - 100 + 'px')
 
 
-var svg = d3.select('#overlay')
-  .append('svg')
+var svg = d3.select('#overlay').select('svg')
     .attr({width: 800, height: oHeight})
 
 var gradScale = d3.scale.linear()
@@ -248,6 +281,10 @@ scroll.on('active', function(i){
     .transition().duration(1000)
       .attr('stop-color', ƒ(i ? 'discColor' : 'gradColor'))
 
+
+  d3.selectAll('#color-code div')
+      .style('display', function(){ 
+        return d3.select(this).attr('id') == curScaleStr ? 'block' : 'none' })
 })
 
 
