@@ -37,8 +37,8 @@ section.active{
 #color-code{
   width: 300px;
   position: fixed;
-  top: 0px;
-  left: 200px;
+  top: 20px;
+  left: 225px;
 }
 
 #color-code div{
@@ -48,10 +48,20 @@ section.active{
 circle{
   fill: rgb(255, 217, 159);
   stroke: black;
+  stroke-width: 1px;
+}
+circle.selected{
+  stroke-width: 3px;
+  stroke: red;
 }
 
 .area{
   stroke: black;
+  stroke-width: 1px;
+}
+.area.selected{
+  stroke: red;
+  stroke-width: 3px;
 }
 
 </style>
@@ -236,6 +246,16 @@ var circles = scatterG.selectAll('circle')
     .attr('cx', function(d, i){ return circleX(i) })
     .attr('cy', circleY)
 
+scatterG.append('text')
+    .text('value ->')
+    .attr('transform', 'rotate(270)')
+    .attr({x: 0, 'text-anchor': 'end', dy: '-.13em'})
+
+scatterG.append('text')
+    .text('rank ->')
+    .attr({x: sWidth, y: sHeight, 'text-anchor': 'end', dy: '.66em'})
+
+
 //map
 var mapG = svg.append('g')
     .attr('transform', 'translate(' + (width - 50 - sWidth) + ',' + (oHeight - sHeight)/2 + ')')
@@ -251,8 +271,9 @@ mapG.append('g')
     .selectAll('area')
     .data(d3.geom.voronoi()(points)).enter()
   .append('path').classed('area', true)
-.attr('clip-path', 'url(#mapclip)')
-    .attr('d', function(d){
+    .attr('clip-path', 'url(#mapclip)')
+    .attr('d', function(d, i){
+      d.i = i
       return 'M' + d.join('L') })
 
 var curValues, curRect, curScaleStr, curScale
@@ -273,9 +294,9 @@ scroll.on('active', function(i){
     .transition().duration(1000)
       .call(curRect)
 
-  d3.selectAll('.area').data(curValues)
+  d3.selectAll('.area')
     .transition().duration(1000)
-      .attr('fill', function(d, i){ return curScale(curValues[i]) })
+      .attr('fill', function(d, i){ return curScale(curValues[d.i]) })
 
   svg.selectAll('stop')
     .transition().duration(1000)
@@ -287,6 +308,15 @@ scroll.on('active', function(i){
         return d3.select(this).attr('id') == curScaleStr ? 'block' : 'none' })
 })
 
+
+function updateHover(i){
+  d3.selectAll('circle')
+      .classed('selected', function(d, j){ return i == j })
+  
+  d3.selectAll('.area')
+      .classed('selected', function(d){ return i == d.i })
+      .sort(function(a, b){ return i == a.i || i != b.i })
+}
 
 
 
