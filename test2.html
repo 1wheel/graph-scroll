@@ -40,7 +40,7 @@ circle{
 }
 
 .area{
-  stroke: white;
+  stroke: black;
 }
 
 </style>
@@ -186,9 +186,6 @@ svg.append('defs').selectAll('linearGradient')
 svg.append('rect').attr({width: width, height: oHeight})
     .style('fill', 'rgb(250, 248, 248)')
 
-var mapG = svg.append('g')
-    .attr('transform', 'translate(' + (width - 50 - sWidth) + ',' + (oHeight - sHeight)/2 + ')')
-
 //scatter plot
 var scatterG = svg.append('g')
     .attr('transform', 'translate(' + 50 + ',' + (oHeight - sHeight)/2 + ')')
@@ -207,11 +204,17 @@ var circles = scatterG.selectAll('circle')
     .attr('cy', circleY)
 
 //map
+var mapG = svg.append('g')
+    .attr('transform', 'translate(' + (width - 50 - sWidth) + ',' + (oHeight - sHeight)/2 + ')')
+
 d3.select('defs').append('clipPath').attr('id', 'mapclip')
   .append('rect')
     .attr({width: sWidth, height: sHeight})
-var points = d3.range(n).map(function(d){
-  return {x: Math.random()*sWidth, y: Math.random()*sHeight} })
+var points = []
+while (points.length < n){
+  var p = {x: Math.random()*sWidth, y: Math.random()*sHeight}
+  if (points.every(function(d){ return dist(p, d) > 12 })) points.push(p)
+}
 mapG.append('g')
     .selectAll('area')
     .data(d3.geom.voronoi().x(ƒ('x')).y(ƒ('y'))(points)).enter()
@@ -253,5 +256,13 @@ scroll.on('active', function(i){
       .attr('stop-color', ƒ(i ? 'discColor' : 'gradColor'))
 
 })
+
+
+
+
+function dist(a, b){
+  return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2))
+}
+
 
 </script>
