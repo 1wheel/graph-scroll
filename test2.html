@@ -35,9 +35,8 @@ section.active{
 }
 
 circle{
-  fill: steelblue;
-  fill-opacity: 0;
-  stroke: orange;
+  fill: rgb(255, 217, 159);
+  stroke: black;
 }
 
 </style>
@@ -94,25 +93,27 @@ var width = 800,
     sWidth = 150,
     colors = ["#f2f0f7","#cbc9e2","#9e9ac8","#756bb1","#54278f"],
     scroll = gscroll(),
-    n = 150,
-    ƒ = function(s){ return function(o){ return o[s] } };
+    n = 50,
+    circleX = d3.scale.linear().domain([0, n - 1]).range([0, sWidth]),
+    circleY = d3.scale.linear().range([sHeight, 0]),
+    ƒ = function(s){ return function(o){ return o[s] } }
 
 var steps = [
   {scale: 'gradient', values: 'start'},
   {scale: 'quantize', values: 'start'},
   {scale: 'quantize', values: 'quantizeFlaw'},
-  {scale: 'quantile', values: 'start'},
+  {scale: 'quantile', values: 'quantizeFlaw'},
   {scale: 'quantile', values: 'quantileFlaw'},
   {scale: 'janx',     values: 'quantileFlaw'}
 ]
 
 var values = {}
 values.start = d3.range(n).map(function(){
-  return Math.random()*sHeight })
+  return Math.random() }).sort()
 values.quantizeFlaw = d3.range(n).map(function(d){
-  return sHeight/n*d + Math.random()*40 - 20 })
+  return Math.random() }).sort()
 values.quantileFlaw = d3.range(n).map(function(d){
-  return sHeight/n*d + Math.random()*20 - 10 })
+  return Math.random() }).sort()
 
 var rectAttrs = {}
 rectAttrs.gradient = function(selection){
@@ -176,7 +177,6 @@ svg.append('defs').selectAll('linearGradient')
           .datum({gradColor: gradScale(i + 1), discColor: colors[i]})
     })
 
-
 svg.append('rect').attr({width: width, height: oHeight})
     .style('fill', 'rgb(250, 248, 248)')
 
@@ -194,8 +194,8 @@ var circles = scatterG.selectAll('circle')
     .data(values.start).enter()
   .append('circle')
     .attr('r', 2)
-    .attr('cx', function(d, i){ return i })
-    .attr('cy', function(d, i){ return d })
+    .attr('cx', function(d, i){ return circleX(i) })
+    .attr('cy', circleY)
 
 scroll.on('active', function(i){
   var curValues = values[steps[i].values]
@@ -206,7 +206,7 @@ scroll.on('active', function(i){
 
   circles.data(curValues)
     .transition().duration(1000)
-      .attr('cy', function(d){ return d })
+      .attr('cy', circleY)
 
   rects
     .transition().duration(1000)
