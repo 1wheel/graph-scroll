@@ -314,12 +314,12 @@ scroll.on('active', function(i){
 
 
 function updateHover(i){
-  d3.selectAll('circle')
+  scatterG.selectAll('circle')
       .classed('selected', function(d, j){ return i == j })
   
-  d3.selectAll('.area')
+  mapG.selectAll('.area')
       .classed('selected', function(d){ return i == d.i })
-      .sort(function(a, b){ return i == a.i || i != b.i })
+  mapG.node().appendChild(mapG.select('.selected').node())
 }
 
 
