@@ -232,6 +232,10 @@ svg.append('rect').attr({width: width, height: oHeight})
 //scatter plot
 var scatterG = svg.append('g')
     .attr('transform', 'translate(' + 50 + ',' + (oHeight - sHeight)/2 + ')')
+    .on('mousemove', function(){
+
+      updateHover(Math.round(circleX.invert(d3.mouse(this)[0])))
+    })
 
 var rects = scatterG.selectAll('rect')
     .data(colors).enter()
@@ -259,6 +263,7 @@ scatterG.append('text')
 //map
 var mapG = svg.append('g')
     .attr('transform', 'translate(' + (width - 50 - sWidth) + ',' + (oHeight - sHeight)/2 + ')')
+    .attr('clip-path', 'url(#mapclip)')
 
 d3.select('defs').append('clipPath').attr('id', 'mapclip')
   .append('rect').attr({width: sWidth, height: sHeight})
@@ -267,14 +272,13 @@ while (points.length < n){
   var p = [Math.random()*sWidth, Math.random()*sHeight]
   if (points.every(function(d){ return dist(p, d) > 12 })) points.push(p)
 }
-mapG.append('g')
-    .selectAll('area')
+mapG.selectAll('area')
     .data(d3.geom.voronoi()(points)).enter()
   .append('path').classed('area', true)
-    .attr('clip-path', 'url(#mapclip)')
     .attr('d', function(d, i){
       d.i = i
       return 'M' + d.join('L') })
+    .on('mouseover', function(d){ updateHover(d.i) })
 
 var curValues, curRect, curScaleStr, curScale
 scroll.on('active', function(i){
