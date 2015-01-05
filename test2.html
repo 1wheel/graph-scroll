@@ -20,18 +20,27 @@ section.active{
   opacity: 1;
 }
 
+#container{
+  position: relative;
+}
+
 #overlay{
-  position: fixed;
+  position: relative;
+  vertical-align: top;
   height: 150px;
   border-bottom: lightgray 1px solid;
   z-index: 1;
+  background-color: white;
 }
-
+#overlay.fixed{
+  position: fixed;
+  top: 0px;
+}
 #overlay-space{
-  height: 150px;
-  content: ".";
-  display: block;
-  width: 750px;
+  height: 0px;
+}
+#overlay-space.fixed{
+  height: 150px;;
 }
 
 #color-code{
@@ -66,28 +75,30 @@ circle.selected{
 
 </style>
 
-<div id='overlay'>
-  <svg></svg>
-  <div id='color-code'>
-    <div id='gradient'>
-      var colorScale = d3.scale.linear()
-          .domain(d3.extent(points, ƒ('value')))
-          .range(['#f2f0f7', '#54278f'])
-    </div>
-    <div id='quantize'>
-      var colorScale = d3.scale.quantize()
-          .domain(d3.extent(points, ƒ('value')))
-          .range(["#f2f0f7","#cbc9e2","#9e9ac8","#756bb1","#54278f"]])
-    </div>
-    <div id='quantile'>
-      var colorScale = d3.scale.quantile()
-          .domain(_.sortBy(points, ƒ('value')))
-          .range(["#f2f0f7","#cbc9e2","#9e9ac8","#756bb1","#54278f"]])
-    </div>
-    <div id='janx'>
-      var colorScale = d3.scale.quantile()
-          .domain(_.sortBy(points, ƒ('value')))
-          .range(["#f2f0f7","#cbc9e2","#9e9ac8","#756bb1","#54278f"]])
+<div id='container'>
+  <div id='overlay'>
+    <svg></svg>
+    <div id='color-code'>
+      <div id='gradient'>
+        var colorScale = d3.scale.linear()
+            .domain(d3.extent(points, ƒ('value')))
+            .range(['#f2f0f7', '#54278f'])
+      </div>
+      <div id='quantize'>
+        var colorScale = d3.scale.quantize()
+            .domain(d3.extent(points, ƒ('value')))
+            .range(["#f2f0f7","#cbc9e2","#9e9ac8","#756bb1","#54278f"]])
+      </div>
+      <div id='quantile'>
+        var colorScale = d3.scale.quantile()
+            .domain(_.sortBy(points, ƒ('value')))
+            .range(["#f2f0f7","#cbc9e2","#9e9ac8","#756bb1","#54278f"]])
+      </div>
+      <div id='janx'>
+        var colorScale = d3.scale.quantile()
+            .domain(_.sortBy(points, ƒ('value')))
+            .range(["#f2f0f7","#cbc9e2","#9e9ac8","#756bb1","#54278f"]])
+      </div>
     </div>
   </div>
 </div>
@@ -142,7 +153,9 @@ var width = 750,
     sWidth = 150,
 
     colors = ["#f2f0f7","#cbc9e2","#9e9ac8","#756bb1","#54278f"],
-    scroll = gscroll(),
+    scroll = gscroll()
+        .container(d3.select('#container'))
+        .fixed(d3.selectAll('#overlay, #overlay-space')),
     n = 50,
     circleX = d3.scale.linear().domain([0, n - 1]).range([0, sWidth]),
     circleY = d3.scale.linear().range([sHeight, 0]),
@@ -310,7 +323,7 @@ scroll.on('active', function(i){
   d3.selectAll('#color-code div')
       .style('display', function(){ 
         return d3.select(this).attr('id') == curScaleStr ? 'block' : 'none' })
-})
+})(d3.selectAll('section'))
 
 
 function updateHover(i){

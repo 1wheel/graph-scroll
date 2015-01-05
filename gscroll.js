@@ -1,22 +1,35 @@
 function gscroll() {
-  var gscroll = {},
-      windowHeight,
+  var windowHeight,
       dispatch = d3.dispatch("scroll", "active"),
+      sections = d3.select('null'),
       i = NaN,
-      startPos = 0,
-      sectionPos = []
+      sectionPos = [],
+      n;
+      fixed = d3.select('null'),
+      isFixed = null,
+      container = d3.select('body'),
+      containerStart = 0;
 
-  sections = d3.selectAll("section")
-  var n = sections.size()
+  //start emiting events on
+  function rv(els){
+    sections = els
+    n = sections.size()
 
-  d3.select(window)
-      .on("scroll.stack", reposition)
-      .on('scroll.resize', resize)
-      .on('keydown.resize', keydown)
+    d3.select(window)
+        .on("scroll.gscroll", reposition)
+        .on('resize.gscroll', resize)
+        .on('keydown.gscroll', keydown)
+  
+    resize()
+    d3.timer(function() {
+      reposition();
+      return true;
+    });
+  }
 
 
   function reposition(){
-    var i1 = d3.bisect(sectionPos, pageYOffset - 10)
+    var i1 = d3.bisect(sectionPos, pageYOffset - 10 - containerStart)
     i1 = Math.min(n - 1, i1)
     if (i != i1){
       sections.classed('active', function(d, i){ return i === i1 })
@@ -25,22 +38,24 @@ function gscroll() {
 
       i = i1
     }
+
+    var isFixed1 = pageYOffset > containerStart
+    if (isFixed != isFixed1){
+      isFixed = isFixed1
+
+      fixed.classed('fixed', isFixed)
+    }
   }
 
   function resize(){
     sectionPos = []
+    var startPos
     sections.each(function(d, i){
       if (!i) startPos = this.getBoundingClientRect().top
-      sectionPos.push(this.getBoundingClientRect().top - startPos) })
+      sectionPos.push(this.getBoundingClientRect().top -  startPos) })
+
+    containerStart = container.node().getBoundingClientRect().top + pageYOffset
   }
-
-
-  resize()
-  d3.timer(function() {
-    reposition();
-    return true;
-  });
-
 
   function keydown() {
     var delta;
@@ -67,7 +82,7 @@ function gscroll() {
       .transition()
         .duration(500)
         .tween("scroll", function() {
-          var i = d3.interpolateNumber(pageYOffset, sectionPos[i1]);
+          var i = d3.interpolateNumber(pageYOffset, sectionPos[i1] + containerStart);
           return function(t) { scrollTo(0, i(t)); };
         })
 
@@ -75,9 +90,21 @@ function gscroll() {
   }
 
 
+  rv.container = function(_x){
+    if (!_x) return container
 
+    container = _x
+    return rv
+  }
 
-  d3.rebind(gscroll, dispatch, "on");
+  rv.fixed = function(_x){
+    if (!_x) return fixed
 
-  return gscroll;
+    fixed = _x
+    return rv
+  }
+
+  d3.rebind(rv, dispatch, "on");
+
+  return rv;
 }
