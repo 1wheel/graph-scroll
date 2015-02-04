@@ -14,7 +14,7 @@ function graphScroll() {
     var i1 = d3.bisect(sectionPos, pageYOffset - 10 - containerStart)
     i1 = Math.min(n - 1, i1)
     if (i != i1){
-      sections.classed('active', function(d, i){ return i === i1 })
+      sections.classed('graph-scroll-active', function(d, i){ return i === i1 })
 
       dispatch.active(i1)
 
@@ -25,7 +25,7 @@ function graphScroll() {
     if (isFixed != isFixed1){
       isFixed = isFixed1
 
-      fixed.classed('fixed', isFixed)
+      fixed.classed('graph-scroll-fixed', isFixed)
     }
   }
 
