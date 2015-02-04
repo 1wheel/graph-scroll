@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<style>
+
+body{
+  width: 900px;
+  margin: 0px auto;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+#container{
+  position: relative;
+  width: 100%;
+}
+
+#sections{
+  width: 200px;
+  float: left;
+}
+
+#sections > div{
+  background: white;
+  color: lightgray;
+  height: 150px;
+}
+
+#sections h3{
+  text-align: center;
+}
+
+#sections > div.active{
+  color: black;
+}
+
+
+#graph{
+  width: 600px;
+  float: left;
+  vertical-align: top;
+  margin-left: 40px;
+}
+
+#graph.fixed{
+  position: fixed;
+  top: 0px;
+  margin-left: 240px;
+}
+
+
+circle{
+  fill: steelblue;
+}
+
+</style>
+
+<h1 style='text-align: center'>graph-scroll.js</h1>
+
+<div id='container'>
+  <div id='sections'>
+    <div>
+      <h3>top right</h3>
+      some text about the top right
+    </div>
+
+    <div>
+      <h3>top left</h3>
+      some text about the top left
+    </div>
+
+    <div>
+      <h3>bottom right</h3>
+      some text about the bottom right
+    </div>
+
+    <div>
+      <h3>middle</h3>
+      some text about the middle
+    </div>
+  </div>
+
+  <div id='graph'></div>
+</div>
+
+
+<script src="d3.v3.js"></script>
+<script src="graph-scroll.js"></script>
+<script>
+
+var width = 600,
+    oHeight = 450,
+    r = 40
+
+d3.select('#sections')
+    .style('margin-bottom', window.innerHeight - 200 + 'px')
+
+
+var svg = d3.select('#graph')
+  .append('svg')
+    .attr({width: width, height: oHeight})
+
+svg.append('rect').attr({width: width, height: oHeight}).style('fill', 'lightgray')
+var circle = svg.append('circle')
+    .attr({cx: 0, cy: 0, r: r})
+
+graphScroll()
+    .container(d3.select('#container'))
+    .fixed(d3.selectAll('#graph'))
+    .sections(d3.selectAll('#sections > div'))
+    .on('active', function(i){
+      var pos = [ {cx: width - r,         cy: r},
+                  {cx: r,                 cy: r},
+                  {cx: width - r, cy: oHeight - r},
+                  {cx: width/2,   cy: oHeight/2} ][i]
+      
+      circle.transition().duration(1000)
+          .attr(pos)
+})
+
+</script>
