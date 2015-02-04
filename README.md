@@ -2,7 +2,7 @@
 
 Simple scrolling events for [d3](https://github.com/mbostock/d3) graphs. Based on [stack](https://github.com/mbostock/stack.git)
 
-*graph-scroll* takes a selection of sections of explantory text and emits `active` events as different sections are scrolled into to view. These `active` events can be used to update a chart's state.
+*graph-scroll* takes a selection of explanatory text sections and emits `active` events as different sections are scrolled into to view. These `active` events can be used to update a chart's state.
 
 ```
 graphScroll()
