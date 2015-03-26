@@ -27,7 +27,7 @@ body{
   height: 350px;
 }
 
-#sections h3{
+h1, h3{
   text-align: center;
 }
 
@@ -51,7 +51,7 @@ body{
 #graph.graph-scroll-below {
   position: absolute;
   bottom: 0px;
-  margin-left: 215px;
+  margin-left: 240px;
 }
 
 
@@ -61,8 +61,8 @@ circle{
 
 </style>
 
-<h1 style='text-align: center'>graph-scroll.js</h1>
-Simple scrolling events for d3.
+<h1>graph-scroll.js</h1>
+<h3>Simple scrolling events for d3.</h3>
 
 <div id='container'>
   <div id='sections'>
@@ -90,9 +90,9 @@ Simple scrolling events for d3.
   <div id='graph'></div>
 </div>
 
-<div id='footer'>
+<h1>
   Content after container pushes everything up
-</div>
+</h1>
 
 
 
@@ -109,7 +109,10 @@ var svg = d3.select('#graph')
   .append('svg')
     .attr({width: width, height: oHeight})
 
-svg.append('rect').attr({width: width, height: oHeight}).style('fill', 'lightgray')
+svg.append('rect')
+    .attr({width: width, height: oHeight})
+    .style('fill', '#eee')
+
 var circle = svg.append('circle')
     .attr({cx: 0, cy: 0, r: r})
 

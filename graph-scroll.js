@@ -22,16 +22,15 @@ function graphScroll() {
       i = i1
     }
 
-    var isFixed1 = pageYOffset > containerStart
-    if (isFixed != isFixed1){
-      isFixed = isFixed1
-
-      fixed.classed('graph-scroll-fixed', isFixed)
-    }
     var isBelow1 = pageYOffset > belowStart
     if (isBelow != isBelow1){
       isBelow = isBelow1
       fixed.classed('graph-scroll-below', isBelow)
+    }
+    var isFixed1 = !isBelow && pageYOffset > containerStart
+    if (isFixed != isFixed1){
+      isFixed = isFixed1
+      fixed.classed('graph-scroll-fixed', isFixed)
     }
   }
 
@@ -44,7 +43,7 @@ function graphScroll() {
 
     var containerBB = container.node().getBoundingClientRect()
     var fixedBB = fixed.node().getBoundingClientRect()
-    
+
     containerStart = containerBB.top + pageYOffset
     belowStart = containerBB.bottom - fixedBB.height  + pageYOffset
   }
