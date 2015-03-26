@@ -79,8 +79,10 @@ With a little bit of css, the graph element snaps to the top of the page while t
 
 As the bottom of the container approaches the top of the page, the graph is classed with `graph-scroll-below`. A little more css allows the graph slide out of view gracefully:
 
+```
 #graph.graph-scroll-below{
   position: absolute;
   bottom: 0px;
   margin-left: 240px;
 }
+```
