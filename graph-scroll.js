@@ -54,6 +54,7 @@ function graphScroll() {
   }
 
   function keydown() {
+    if (!isFixed) return
     var delta
     switch (d3.event.keyCode) {
       case 39: // right arrow

@@ -23,16 +23,15 @@ body{
 
 #sections > div, #sections2 > div{
   background: white;
-  color: lightgray;
+  opacity: .2;
   margin-bottom:120px;
 }
 
-h1, h3{
-  text-align: center;
-}
 
-#sections > div.graph-scroll-active{
-  color: black;
+
+
+#sections > div.graph-scroll-active, #sections2 > div.graph-scroll-active{
+  opacity: 1;
 }
 
 
@@ -53,6 +52,13 @@ h1, h3{
   margin-left: 380px;
 }
 
+h1{
+  margin: 50px;
+}
+
+h1, h3{
+  text-align: center;
+}
 
 circle{
   fill: steelblue;
@@ -166,14 +172,45 @@ graphScroll()
 
 <div id='container2'>
   <div id='sections2'>
-    <div>Section 0</div>
-    <div>Section 1</div>
-    <div>Section 2</div>
+    <div>
+      <h3>Scroll away</h3>
+
+      As the bottom of the container approaches the top of the page, the graph is classed with <span class='mono'>graph-scroll-below</span>. A little more css allows the graph slide out of view gracefully:
+<pre>
+  #graph.graph-scroll-below{
+    position: absolute;
+    bottom: 0px;
+    margin-left: 240px;
+  }
+</pre>
+    </div>
+
+    <div>
+      <h3>Examples</h3>
+      <p><a href='http://www.bloomberg.com/graphics/2015-auto-sales/'>Auto Sales</a></p>
+      <p><a href='http://www.bloomberg.com/graphics/2015-measles-outbreaks/'>Measles</a></p>
+      <p><a href='http://roadtolarissa.com/blog/2015/01/04/coloring-maps-with-d3/'>Coloring Maps</a></p>
+    </div>
+
+    <div>
+      <h3>More reading</h3>
+      <p><a href='http://bost.ocks.org/mike/scroll/'>How To Scroll</a></p>
+      <p><a href='https://source.opennews.org/en-US/articles/behind-scenes-fewer-helmets-more-deaths/'>Making “Fewer Helmets, More Deaths”</a></p>
+    </div>
+
+    <div>
+      <h3>Todos</h3>
+      <p>- Simple examples
+      <p>- Self explanatory graphics
+      <p>- Expose scroll-to functionality 
+    </div>
   </div>
 
   <div id='graph2'></div>
+
 </div>
 
+<h3 id='source'><a href='https://github.com/1wheel/graph-scroll'>contribute/view on github</a></h3>
 
 
 <script src="d3.v3.js"></script>
@@ -181,16 +218,17 @@ graphScroll()
 <script>
 
 var width = 500,
-    oHeight = 450,
+    height = 450,
     r = 40
 
 var svg = d3.select('#graph')
   .append('svg')
-    .attr({width: width, height: oHeight})
+    .attr({width: width, height: height})
 
 var circle = svg.append('circle')
     .attr({cx: 0, cy: 0, r: r})
 
+var colors = ['orange', 'purple', 'steelblue', 'black']
 var gs = graphScroll()
     .container(d3.select('#container'))
     .graph(d3.selectAll('#graph'))
@@ -198,33 +236,43 @@ var gs = graphScroll()
     .on('active', function(i){
       var pos = [ {cx: width - r,         cy: r},
                   {cx: r,                 cy: r},
-                  {cx: width - r, cy: oHeight - r},
-                  {cx: width/2,   cy: oHeight/2} ][i]
+                  {cx: width - r, cy: height - r},
+                  {cx: width/2,   cy: height/2} ][i]
       
       circle.transition().duration(1000)
           .attr(pos)
+        .transition()
+          .style('fill', colors[i])
     })
 
 
 var svg2 = d3.select('#graph2')
   .append('svg')
-    .attr({width: width, height: oHeight})
+    .attr({width: width, height: height})
 
-var circle2 = svg2.append('circle')
-    .attr({cx: 0, cy: 0, r: r})
+var path = svg2.append('path')
 
 var gs2 = graphScroll()
     .container(d3.select('#container2'))
     .graph(d3.selectAll('#graph2'))
     .sections(d3.selectAll('#sections2 > div'))
     .on('active', function(i){
-      var pos = [ {cx: width - r,         cy: r},
-                  {cx: r,                 cy: r},
-                  {cx: width - r, cy: oHeight - r},
-                  {cx: width/2,   cy: oHeight/2} ][i]
-      
-      circle2.transition().duration(1000)
-          .attr(pos)
+      var h = height
+      var w = width
+      var dArray = [
+        [[w/4, h/4], [w*3/4, h/4],  [w*3/4, h*3/4], [w/4, h*3/4]],
+        [[0, 0],     [w*3/4, h/4],  [w*3/4, h*3/4], [w/4, h*3/4]],
+        [[w/2, h/2], [w, h/4],      [w, h],         [w/4, h]],
+        [[w/2, h/2], [0, h/4],      [0, h/2],         [w/4, 0]],
+      ].map(function(d){ return 'M' + d.join(' L ') })
+
+
+      path.transition().duration(1000)
+          .attr('d', dArray[i])
+          .style('fill', colors[i])
     })
+
+d3.select('#source')
+    .style({'margin-bottom': window.innerHeight - 500 + 'px', padding: '100px'})
 
 </script>
