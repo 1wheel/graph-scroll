@@ -10,21 +10,21 @@ body{
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-#container{
+#container, #container2{
   position: relative;
   width: 100%;
   overflow: auto;
 }
 
-#sections{
+#sections, #sections2{
   width: 340px;
   float: left;
 }
 
-#sections > div{
+#sections > div, #sections2 > div{
   background: white;
   color: lightgray;
-  height: 350px;
+  margin-bottom:120px;
 }
 
 h1, h3{
@@ -36,18 +36,18 @@ h1, h3{
 }
 
 
-#graph{
+#graph, #graph2{
   float: left;
   margin-left: 40px;
 }
 
-#graph.graph-scroll-fixed{
+#graph.graph-scroll-fixed, #graph2.graph-scroll-fixed{
   position: fixed;
   top: 0px;
   margin-left: 380px;
 }
 
-#graph.graph-scroll-below {
+#graph.graph-scroll-below, #graph2.graph-scroll-below {
   position: absolute;
   bottom: 0px;
   margin-left: 380px;
@@ -62,17 +62,21 @@ circle{
   font-family: monospace;
 }
 
+svg{
+  background-color: #eee;
+}
+
 </style>
 
-<h1>graph-scroll.js</h1>
+<h1><a href='https://github.com/1wheel/graph-scroll'>graph-scroll.js</a></h1>
 <h3>Simple scrolling events for d3 graphics.</h3>
 
 <div id='container'>
   <div id='sections'>
     <div>
-      <h3>Connecting text and graphics</h3>
+      <h3>Connect text and graphics</h3>
       <span class='mono'>graph-scroll</span> 
-      takes a selection of explanatory text sections and emits <span class='mono'>active</span> events as different sections are scrolled into to view. These active events can be used to update a chart's state.
+      takes a selection of explanatory text sections and dispatches <span class='mono'>active</span> events as different sections are scrolled into to view. These active events can be used to update a chart's state.
       <pre>
 graphScroll()
   .sections(d3.selectAll('#sections > div'))
@@ -98,23 +102,77 @@ graphScroll()
 
 
     <div>
-      <h3>bottom right</h3>
-      some text about the bottom right
+      <h3>Headers and footers</h3>
+      To support headers and intro images/text, the explantor text and graphic are wrapped with a container element:    
+<pre>
+  &lt;h1&gt;Page Title&lt;/div&gt;
+  &lt;div id='container'&gt;
+    &lt;div id='sections'&gt;
+      &lt;div&gt;Section 0&lt;/div&gt;
+      &lt;div&gt;Section 1&lt;/div&gt;
+      &lt;div&gt;Section 2&lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div id='graph'&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;h1&gt;Footer&lt;/h1&gt;
+</pre>
+
+    and passed to <span class='mono'>graphScroll</span>
+
+<pre>
+  graphScroll()
+    .graph(d3.selectAll('#graph'))
+    .container(d3.select('#container'))
+<pre>
     </div>
 
     <div>
-      <h3>middle</h3>
-      some text about the middle
+      <h3>Sticky graph</h3>
+      When the graph scrolls out of view, it is classed with <span class='mono'>graph-scroll-fixed</span>. With a little bit of css, the graph element snaps to the top of the page while the text scrolls by. 
+<pre>
+  #container{
+    position: relative;
+    overflow: auto;
+  }
+
+  #sections{
+    width: 200px;
+    float: left;
+  }
+
+  #graph{
+    width: 600px;
+    float: left;
+    margin-left: 40px;
+  }
+
+  #graph.graph-scroll-fixed{
+    position: fixed;
+    top: 0px;
+    margin-left: 240px;
+  }
+</pre>
     </div>
+
   </div>
 
   <div id='graph'></div>
 </div>
 
 <h1>
-  Content after container pushes everything up
+  Multiple graphs
 </h1>
 
+<div id='container2'>
+  <div id='sections2'>
+    <div>Section 0</div>
+    <div>Section 1</div>
+    <div>Section 2</div>
+  </div>
+
+  <div id='graph2'></div>
+</div>
 
 
 
@@ -130,16 +188,12 @@ var svg = d3.select('#graph')
   .append('svg')
     .attr({width: width, height: oHeight})
 
-svg.append('rect')
-    .attr({width: width, height: oHeight})
-    .style('fill', '#eee')
-
 var circle = svg.append('circle')
     .attr({cx: 0, cy: 0, r: r})
 
-graphScroll()
+var gs = graphScroll()
     .container(d3.select('#container'))
-    .fixed(d3.selectAll('#graph'))
+    .graph(d3.selectAll('#graph'))
     .sections(d3.selectAll('#sections > div'))
     .on('active', function(i){
       var pos = [ {cx: width - r,         cy: r},
@@ -148,6 +202,28 @@ graphScroll()
                   {cx: width/2,   cy: oHeight/2} ][i]
       
       circle.transition().duration(1000)
+          .attr(pos)
+    })
+
+
+var svg2 = d3.select('#graph2')
+  .append('svg')
+    .attr({width: width, height: oHeight})
+
+var circle2 = svg2.append('circle')
+    .attr({cx: 0, cy: 0, r: r})
+
+var gs2 = graphScroll()
+    .container(d3.select('#container2'))
+    .graph(d3.selectAll('#graph2'))
+    .sections(d3.selectAll('#sections2 > div'))
+    .on('active', function(i){
+      var pos = [ {cx: width - r,         cy: r},
+                  {cx: r,                 cy: r},
+                  {cx: width - r, cy: oHeight - r},
+                  {cx: width/2,   cy: oHeight/2} ][i]
+      
+      circle2.transition().duration(1000)
           .attr(pos)
     })
 

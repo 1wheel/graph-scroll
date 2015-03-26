@@ -2,7 +2,7 @@
 
 Simple scrolling events for [d3](https://github.com/mbostock/d3) graphs. Based on [stack](https://github.com/mbostock/stack.git)
 
-*graph-scroll* takes a selection of explanatory text sections and emits `active` events as different sections are scrolled into to view. These `active` events can be used to update a chart's state.
+*graph-scroll* takes a selection of explanatory text sections and dispatches `active` events as different sections are scrolled into to view. These `active` events can be used to update a chart's state.
 
 ```
 graphScroll()
@@ -22,7 +22,7 @@ The top most element scrolled fully into view is classed `graph-scroll-active`. 
 }
 ```
 
-To support headers and intro images/text, we use create a container element containing the explanatory text and graph.
+To support headers and intro images/text, we use a container element containing the explanatory text and graph.
 
 ```
 <h1>Page Title</div>
@@ -35,25 +35,27 @@ To support headers and intro images/text, we use create a container element cont
 
 	<div id='graph'></div>
 </div>
+<h1>Footer</h1>
 ```
 
-If these elements are passed to graphScroll as selections with `container` and `fixed`, every element in the fixed selection will be classed `graph-scroll-fixed` if the top of the container is out of view. 
+If these elements are passed to graphScroll as selections with `container` and `graph`, every element in the graph selection will be classed `graph-scroll-graph` if the top of the container is out of view. 
 
 ```
 graphScroll()
-	.fixed(d3.selectAll('#graph'))
+	.graph(d3.selectAll('#graph'))
 	.container(d3.select('#container'))
-    .sections(d3.selectAll('#sections > div'))
-    .on('active', function(i){ console.log(i + 'th section active') })
+  .sections(d3.selectAll('#sections > div'))
+  .on('active', function(i){ console.log(i + 'th section active') })
 
 ```
 
-With a little bit of css, we can make the graph element snap to the top of the page while the text scrolls by. 
+With a little bit of css, the graph element snaps to the top of the page while the text scrolls by. 
 
 
 ```
 #container{
   position: relative;
+  overflow: auto;
 }
 
 #sections{
@@ -75,5 +77,5 @@ With a little bit of css, we can make the graph element snap to the top of the p
 ```
 
 
-
+Once the bottom
 

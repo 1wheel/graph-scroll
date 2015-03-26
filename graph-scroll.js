@@ -4,12 +4,14 @@ function graphScroll() {
       sections = d3.select('null'),
       i = NaN,
       sectionPos = [],
-      n
-      fixed = d3.select('null'),
+      n,
+      graph = d3.select('null'),
       isFixed = null,
       isBelow = null,
       container = d3.select('body'),
-      containerStart = 0
+      containerStart = 0,
+      belowStart,
+      eventId = Math.random()
 
   function reposition(){
     var i1 = 0
@@ -28,12 +30,12 @@ function graphScroll() {
     var isBelow1 = pageYOffset > belowStart
     if (isBelow != isBelow1){
       isBelow = isBelow1
-      fixed.classed('graph-scroll-below', isBelow)
+      graph.classed('graph-scroll-below', isBelow)
     }
     var isFixed1 = !isBelow && pageYOffset > containerStart
     if (isFixed != isFixed1){
       isFixed = isFixed1
-      fixed.classed('graph-scroll-fixed', isFixed)
+      graph.classed('graph-scroll-fixed', isFixed)
     }
   }
 
@@ -45,10 +47,10 @@ function graphScroll() {
       sectionPos.push(this.getBoundingClientRect().top -  startPos) })
 
     var containerBB = container.node().getBoundingClientRect()
-    var fixedBB = fixed.node().getBoundingClientRect()
+    var graphBB = graph.node().getBoundingClientRect()
 
     containerStart = containerBB.top + pageYOffset
-    belowStart = containerBB.bottom - fixedBB.height  + pageYOffset
+    belowStart = containerBB.bottom - graphBB.height  + pageYOffset
   }
 
   function keydown() {
@@ -93,10 +95,17 @@ function graphScroll() {
     return rv
   }
 
-  rv.fixed = function(_x){
-    if (!_x) return fixed
+  rv.graph = function(_x){
+    if (!_x) return graph
 
-    fixed = _x
+    graph = _x
+    return rv
+  }
+
+  rv.eventId = function(_x){
+    if (!_x) return eventId
+
+    eventId = _x
     return rv
   }
 
@@ -107,9 +116,9 @@ function graphScroll() {
     n = sections.size()
 
     d3.select(window)
-        .on("scroll.gscroll", reposition)
-        .on('resize.gscroll', resize)
-        .on('keydown.gscroll', keydown)
+        .on('scroll.gscroll'  + eventId, reposition)
+        .on('resize.gscroll'  + eventId, resize)
+        .on('keydown.gscroll' + eventId, keydown)
     
     resize()
     d3.timer(function() {
