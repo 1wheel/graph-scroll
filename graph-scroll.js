@@ -7,6 +7,7 @@ function graphScroll() {
       n
       fixed = d3.select('null'),
       isFixed = null,
+      isBelow = null,
       container = d3.select('body'),
       containerStart = 0
 
@@ -27,6 +28,11 @@ function graphScroll() {
 
       fixed.classed('graph-scroll-fixed', isFixed)
     }
+    var isBelow1 = pageYOffset > belowStart
+    if (isBelow != isBelow1){
+      isBelow = isBelow1
+      fixed.classed('graph-scroll-below', isBelow)
+    }
   }
 
   function resize(){
@@ -36,7 +42,11 @@ function graphScroll() {
       if (!i) startPos = this.getBoundingClientRect().top
       sectionPos.push(this.getBoundingClientRect().top -  startPos) })
 
-    containerStart = container.node().getBoundingClientRect().top + pageYOffset
+    var containerBB = container.node().getBoundingClientRect()
+    var fixedBB = fixed.node().getBoundingClientRect()
+    
+    containerStart = containerBB.top + pageYOffset
+    belowStart = containerBB.bottom - fixedBB.height  + pageYOffset
   }
 
   function keydown() {
