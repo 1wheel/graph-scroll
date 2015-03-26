@@ -12,7 +12,10 @@ function graphScroll() {
       containerStart = 0
 
   function reposition(){
-    var i1 = d3.bisect(sectionPos, pageYOffset - 10 - containerStart)
+    var i1 = 0
+    sectionPos.forEach(function(d, i){
+      if (d < pageYOffset - containerStart + 200) i1 = i
+    })
     i1 = Math.min(n - 1, i1)
     if (i != i1){
       sections.classed('graph-scroll-active', function(d, i){ return i === i1 })

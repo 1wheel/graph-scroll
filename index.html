@@ -17,7 +17,7 @@ body{
 }
 
 #sections{
-  width: 200px;
+  width: 340px;
   float: left;
 }
 
@@ -37,7 +37,6 @@ h1, h3{
 
 
 #graph{
-  width: 600px;
   float: left;
   margin-left: 40px;
 }
@@ -45,13 +44,13 @@ h1, h3{
 #graph.graph-scroll-fixed{
   position: fixed;
   top: 0px;
-  margin-left: 240px;
+  margin-left: 380px;
 }
 
 #graph.graph-scroll-below {
   position: absolute;
   bottom: 0px;
-  margin-left: 240px;
+  margin-left: 380px;
 }
 
 
@@ -59,22 +58,44 @@ circle{
   fill: steelblue;
 }
 
+.mono{
+  font-family: monospace;
+}
+
 </style>
 
 <h1>graph-scroll.js</h1>
-<h3>Simple scrolling events for d3.</h3>
+<h3>Simple scrolling events for d3 graphics.</h3>
 
 <div id='container'>
   <div id='sections'>
     <div>
-      <h3>top right</h3>
-      some text about the top right
+      <h3>Connecting text and graphics</h3>
+      <span class='mono'>graph-scroll</span> 
+      takes a selection of explanatory text sections and emits <span class='mono'>active</span> events as different sections are scrolled into to view. These active events can be used to update a chart's state.
+      <pre>
+graphScroll()
+  .sections(d3.selectAll('#sections > div'))
+  .on('active', function(i){
+    console.log(i + 'th section active') })
+      </pre>
+
     </div>
 
     <div>
-      <h3>top left</h3>
-      some text about the top left
+      <h3>Highlight active text</h3>
+      The top most element scrolled fully into view is classed <span class='mono'>graph-scroll-active</span>. This makes it easy to highlight the active section with css: 
+<pre>
+#sections > div{
+  opacity: .3
+} 
+
+#sections div.graph-scroll-active{
+  opacity: 1;
+}
+</pre>
     </div>
+
 
     <div>
       <h3>bottom right</h3>
@@ -101,7 +122,7 @@ circle{
 <script src="graph-scroll.js"></script>
 <script>
 
-var width = 600,
+var width = 500,
     oHeight = 450,
     r = 40
 
