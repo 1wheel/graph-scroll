@@ -82,7 +82,7 @@ svg{
     <div>
       <h3>Connect text and graphics</h3>
       <span class='mono'>graph-scroll</span> 
-      takes a selection of explanatory text sections and dispatches <span class='mono'>active</span> events as different sections are scrolled into to view. These active events can be used to update a chart's state.
+      takes a selection of explanatory text sections and dispatches <span class='mono'>active</span> events as different sections are scrolled into to view. These active events are used to update a graph's state.
       <pre>
 graphScroll()
   .sections(d3.selectAll('#sections > div'))
@@ -94,7 +94,7 @@ graphScroll()
 
     <div>
       <h3>Highlight active text</h3>
-      The top most element scrolled fully into view is classed <span class='mono'>graph-scroll-active</span>. This makes it easy to highlight the active section with css: 
+      The top most text section scrolled into view is classed <span class='mono'>graph-scroll-active</span>. This makes it easy to highlight the active section with css: 
 <pre>
 #sections > div{
   opacity: .3
