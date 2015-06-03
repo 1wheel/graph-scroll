@@ -74,20 +74,28 @@ function graphScroll() {
     }
 
     var i1 = Math.max(0, Math.min(i + delta, n - 1))
-    d3.select(document.documentElement)
-        .interrupt()
-      .transition()
-        .duration(500)
-        .tween("scroll", function() {
-          var i = d3.interpolateNumber(pageYOffset, sectionPos[i1] + containerStart)
-          return function(t) { scrollTo(0, i(t)) }
-        })
+    rv.scrollTo(i1)
 
     d3.event.preventDefault()
   }
 
 
   var rv ={}
+
+  rv.scrollTo = function(_x){
+    if (!_x) return rv
+
+    d3.select(document.documentElement)
+        .interrupt()
+      .transition()
+        .duration(500)
+        .tween("scroll", function() {
+          var i = d3.interpolateNumber(pageYOffset, sectionPos[_x] + containerStart)
+          return function(t) { scrollTo(0, i(t)) }
+        })
+    return rv
+  }
+
 
   rv.container = function(_x){
     if (!_x) return container
@@ -120,7 +128,7 @@ function graphScroll() {
         .on('scroll.gscroll'  + eventId, reposition)
         .on('resize.gscroll'  + eventId, resize)
         .on('keydown.gscroll' + eventId, keydown)
-    
+
     resize()
     d3.timer(function() {
       reposition()
