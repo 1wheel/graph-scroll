@@ -83,7 +83,7 @@ function graphScroll() {
   var rv ={}
 
   rv.scrollTo = function(_x){
-    if (!_x) return rv
+    if (isNaN(_x)) return rv
 
     d3.select(document.documentElement)
         .interrupt()
