@@ -4,7 +4,7 @@ if (typeof exports !== 'undefined') {
   }
   exports.graphScroll = graphScroll;
 } else {
-  root.graphScroll = graphScroll;
+  this.graphScroll = graphScroll;
 }
 
 function graphScroll() {
