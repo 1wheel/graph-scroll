@@ -23,7 +23,7 @@ function graphScroll() {
     if (i != i1){
       sections.classed('graph-scroll-active', function(d, i){ return i === i1 })
 
-      dispatch.active(i1, i)
+      dispatch.active.call(sections[0][i1], i1, i)
 
       i = i1
     }
