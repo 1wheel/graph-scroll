@@ -1,3 +1,12 @@
+if (typeof exports !== 'undefined') {
+  if (typeof module !== 'undefined' && module.exports) {
+    exports = module.exports = graphScroll;
+  }
+  exports.graphScroll = graphScroll;
+} else {
+  root.graphScroll = graphScroll;
+}
+
 function graphScroll() {
   var windowHeight,
       dispatch = d3.dispatch("scroll", "active"),
