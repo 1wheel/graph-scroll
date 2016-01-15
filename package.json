@@ -1,21 +1,26 @@
 {
   "name": "graph-scroll",
-  "version": "1.0.0",
-  "description": "experiments using scrolling instead of steppers",
+  "version": "0.0.1",
+  "description": "Simple scrolling events for d3 graphs",
   "main": "graph-scroll.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/1wheel/graph-scroll.git"
+    "url": "https://github.com/1wheel/graph-scroll.git"
   },
+  "keywords": [
+    "d3",
+    "scroll",
+    "graph"
+  ],
   "author": "Adam Pearce",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/1wheel/graph-scroll/issues"
   },
-  "homepage": "https://github.com/1wheel/graph-scroll#readme",
+  "homepage": "https://github.com/1wheel/graph-scroll",
   "dependencies": {
     "d3": "^3.5.12"
   }
