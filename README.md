@@ -4,15 +4,20 @@ Simple scrolling events for [d3](https://github.com/mbostock/d3) graphs. Based o
 
 ### [Demo/Documentation](http://1wheel.github.io/graph-scroll/)
 
-`graphScroll` takes a selection of explanatory text sections and dispatches `active` events as different sections are scrolled into to view. These `active` events can be used to update a chart's state.
+`graphScroll` takes a selection of explanatory text sections and dispatches `active` events as different sections are scrolled into to view. These `active` events can be used to update a chart's state. 
+
+A `direction` is also passed on active. It is either `up`, `down` or `jump` (fired when you load a page from not at the time, like when you refresh).
+
+Set an `offset` to determine how far from the top the next section will be before it becomes active.
 
 ```js
 graphScroll()
     .sections(d3.selectAll('#sections > div'))
-    .on('active', function(i){ console.log(i + 'th section active') })
+    .offset(180)
+    .on('active', function(i, direction){ console.log(i + 'th section active', 'Moving ' + direction) })
 ```
 
-The top most element scrolled fully into view is classed `graph-scroll-active`. This makes it easy to highlight the active section with css: 
+You can also set `.triggerAt('middle')` to activate the next section when it reaches the middle of the viewport. The top most element scrolled fully into view is classed `graph-scroll-active`. This makes it easy to highlight the active section with css: 
 
 ```css
 #sections > div{
@@ -47,7 +52,7 @@ graphScroll()
 	.graph(d3.selectAll('#graph'))
 	.container(d3.select('#container'))
   .sections(d3.selectAll('#sections > div'))
-  .on('active', function(i){ console.log(i + 'th section active') })
+  .on('active', function(i, direction){ console.log(i + 'th section active', 'Moving ' + direction) })
 
 ```
 

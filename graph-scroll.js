@@ -1,6 +1,8 @@
 (function(){
+  var d3 = this.d3 || undefined
   if (typeof exports !== 'undefined') {
     if (typeof module !== 'undefined' && module.exports) {
+      d3 = require('d3')
       exports = module.exports = graphScroll;
     }
     exports.graphScroll = graphScroll;
@@ -22,38 +24,70 @@
         containerStart = 0,
         belowStart,
         eventId = Math.random(), 
-        stickyTop
+        stickyTop,
+        lastPageY = -Infinity,
+        triggerAt = 'top',
+        offset = 0;
 
     function reposition(){
       var i1 = 0
+      var viewportHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+      
+      // If our lastPageY variable is our default but we're farther than the scroll top, then we are entering the page from somewhere not the top
+      if (lastPageY == -Infinity && pageYOffset > 0) {
+        direction = 'jump'
+      } else if (pageYOffset > lastPageY) {
+        direction = 'down'
+      } else {
+        direction = 'up'
+      }
+
       sectionPos.forEach(function(d, i){
-        if (d < pageYOffset - containerStart + 180) i1 = i
+        // Trigger active section when it gets to the middle of the viewport
+        if (triggerAt == 'middle' && d < (pageYOffset - containerStart + viewportHeight / 2 + offset) ) {
+          i1 = i
+        // Or at the top of the viewport
+        } else if (triggerAt == 'top' && d < pageYOffset - containerStart + offset) {
+          i1 = i
+        }
       })
+
       i1 = Math.min(n - 1, i1)
       if (i != i1){
         sections.classed('graph-scroll-active', function(d, i){ return i === i1 })
 
-        dispatch.active.call(sections[0][i1], i1, i)
+        dispatch.active.call(sections[0][i1], i1, direction)
 
         i = i1
       }
+      var yStickyOffset = stickyTop || 0
 
-      var isBelow1 = pageYOffset > belowStart - 120
+      var isBelow1 = pageYOffset + yStickyOffset > belowStart
       if (isBelow != isBelow1){
         isBelow = isBelow1
         graph.classed('graph-scroll-below', isBelow)
       }
 
-      var isFixed1 = !isBelow && pageYOffset > containerStart - 120
+      var isFixed1 = !isBelow && pageYOffset > containerStart - yStickyOffset
       if (isFixed != isFixed1){
         isFixed = isFixed1
         graph
           .classed('graph-scroll-fixed', isFixed)
       }
 
+      var top
       if (stickyTop){
-        graph.style('padding-top', (isBelow || isFixed ? stickyTop : 0)+ 'px')
+        if (isBelow) {
+          top = 'auto'
+        } else if (isFixed) {
+          top = stickyTop + 'px'
+        } else {
+          top = '0px'
+        }
+        graph.style('top', top)
       }
+
+      lastPageY = pageYOffset
     }
 
     function resize(){
@@ -128,6 +162,13 @@
       return rv
     }
 
+    rv.triggerAt = function(_x){
+      if (!_x) return triggerAt
+
+      triggerAt = _x
+      return rv
+    }
+
     rv.eventId = function(_x){
       if (!_x) return eventId
 
@@ -139,6 +180,13 @@
       if (!_x) return stickyTop
 
       stickyTop = _x
+      return rv
+    }
+
+    rv.offset = function(_x){
+      if (!_x) return offset
+
+      offset = _x
       return rv
     }
 
