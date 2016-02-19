@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/1wheel/graph-scroll/issues"
   },
-  "homepage": "https://github.com/1wheel/graph-scroll"
+  "homepage": "https://github.com/1wheel/graph-scroll",
+  "dependencies": {
+    "d3": "^3.5.12"
+  }
 }

@@ -82,19 +82,21 @@ svg{
     <div>
       <h3>Connect text and graphics</h3>
       <span class='mono'>graph-scroll</span> 
-      takes a selection of explanatory text sections and dispatches <span class='mono'>active</span> events as different sections are scrolled into to view. These active events are used to update a graph's state.
+      takes a selection of explanatory text sections and dispatches <span class='mono'>active</span> events as different sections are scrolled into to view. These active events are used to update a graph's state.<br/><br/>A <span class='mono'>direction</span> is also passed on active. It is either <span class='mono'>up</span>, <span class='mono'>down</span> or <span class='mono'>jump</span> (fired when you load a page from not at the time, like when you refresh).<br/><br/>Set an <span class="mono">offset</span> to determine how far from the top the next section will be before it becomes active.
       <pre>
 graphScroll()
   .sections(d3.selectAll('#sections > div'))
-  .on('active', function(i){
-    console.log(i + 'th section active') })
+  .offset(180)
+  .on('active', function(i, direction){
+    console.log(i + 'th section active')
+    console.log('Moving ' + direction)
       </pre>
 
     </div>
 
     <div>
       <h3>Highlight active text</h3>
-      The top most text section scrolled into view is classed <span class='mono'>graph-scroll-active</span>. This makes it easy to highlight the active section with css: 
+      You can also set <span class="mono">.triggerAt('middle')</span> to activate the next section when it reaches the middle of the viewport. The top most text section scrolled into view is classed <span class='mono'>graph-scroll-active</span>. This makes it easy to highlight the active section with css: 
 <pre>
 #sections > div{
   opacity: .3
@@ -234,7 +236,9 @@ var gs = graphScroll()
     .container(d3.select('#container'))
     .graph(d3.selectAll('#graph'))
     .sections(d3.selectAll('#sections > div'))
-    .on('active', function(i){
+    .offset(180)
+    .triggerAt('top')
+    .on('active', function(i, direction){
       var pos = [ {cx: width - r,         cy: r},
                   {cx: r,                 cy: r},
                   {cx: width - r, cy: height - r},
@@ -257,7 +261,7 @@ var gs2 = graphScroll()
     .container(d3.select('#container2'))
     .graph(d3.selectAll('#graph2'))
     .sections(d3.selectAll('#sections2 > div'))
-    .on('active', function(i){
+    .on('active', function(i, direction){
       var h = height
       var w = width
       var dArray = [
