@@ -1,0 +1,34 @@
+{
+  "name": "graph-scroll",
+  "version": "0.0.2",
+  "description": "experiments using scrolling instead of steppers",
+  "keywords": [
+    "d3",
+    "d3-module",
+    "annotation",
+    "drag"
+  ],
+  "license": "MIT",
+  "main": "graph-scroll.js",
+  "author": "Adam Pearce",
+  "jsnext:main": "index",
+  "homepage": "http://1wheel.github.io/graph-scroll/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/1wheel/graph-scroll.git"
+  },
+  "scripts": {
+    "pretest": "rollup -f umd -n d3 -g d3:d3 -o graph-scroll.js -- index.js",
+    "test": "echo 'no tests'",
+    "prepublish": "npm run test",
+    "postpublish": "zip -j graph-scroll.zip -- LICENSE README.md graph-scroll.js"
+  },
+  "devDependencies": {
+    "rollup": "0.27",
+    "tape": "4",
+    "uglify-js": "2"
+  },
+  "dependencies": {
+    "d3": "4"
+  }
+}

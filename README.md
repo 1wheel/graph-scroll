@@ -7,7 +7,7 @@ Simple scrolling events for [d3](https://github.com/mbostock/d3) graphs. Based o
 *graph-scroll* takes a selection of explanatory text sections and dispatches `active` events as different sections are scrolled into to view. These `active` events can be used to update a chart's state.
 
 ```
-graphScroll()
+d3.graphScroll()
     .sections(d3.selectAll('#sections > div'))
     .on('active', function(i){ console.log(i + 'th section active') })
 ```
@@ -43,7 +43,7 @@ To support headers and intro images/text, we use a container element containing 
 If these elements are passed to graphScroll as selections with `container` and `graph`, every element in the graph selection will be classed `graph-scroll-graph` if the top of the container is out of view. 
 
 ```
-graphScroll()
+d3.graphScroll()
 	.graph(d3.selectAll('#graph'))
 	.container(d3.select('#container'))
   .sections(d3.selectAll('#sections > div'))

@@ -84,7 +84,7 @@ svg{
       <span class='mono'>graph-scroll</span> 
       takes a selection of explanatory text sections and dispatches <span class='mono'>active</span> events as different sections are scrolled into to view. These active events are used to update a graph's state.
       <pre>
-graphScroll()
+d3.graphScroll()
   .sections(d3.selectAll('#sections > div'))
   .on('active', function(i){
     console.log(i + 'th section active') })
@@ -127,7 +127,7 @@ graphScroll()
     and passed to <span class='mono'>graphScroll</span>
 
 <pre>
-  graphScroll()
+  d3.graphScroll()
     .graph(d3.selectAll('#graph'))
     .container(d3.select('#container'))
 <pre>
@@ -223,7 +223,7 @@ graphScroll()
 <h3 id='source'><a href='https://github.com/1wheel/graph-scroll'>contribute/view on github</a></h3>
 
 
-<script src="d3.v3.js"></script>
+<script src="d3v4+jetpack.js"></script>
 <script src="graph-scroll.js"></script>
 <script>
 
@@ -233,13 +233,13 @@ var width = 500,
 
 var svg = d3.select('#graph')
   .append('svg')
-    .attr({width: width, height: height})
+    .attrs({width: width, height: height})
 
 var circle = svg.append('circle')
-    .attr({cx: 0, cy: 0, r: r})
+    .attrs({cx: 0, cy: 0, r: r})
 
 var colors = ['orange', 'purple', 'steelblue', 'black']
-var gs = graphScroll()
+var gs = d3.graphScroll()
     .container(d3.select('#container'))
     .graph(d3.selectAll('#graph'))
     .sections(d3.selectAll('#sections > div'))
@@ -250,7 +250,7 @@ var gs = graphScroll()
                   {cx: width/2,   cy: height/2} ][i]
       
       circle.transition().duration(1000)
-          .attr(pos)
+          .attrs(pos)
         .transition()
           .style('fill', colors[i])
     })
@@ -258,11 +258,11 @@ var gs = graphScroll()
 
 var svg2 = d3.select('#graph2')
   .append('svg')
-    .attr({width: width, height: height})
+    .attrs({width: width, height: height})
 
 var path = svg2.append('path')
 
-var gs2 = graphScroll()
+var gs2 = d3.graphScroll()
     .container(d3.select('#container2'))
     .graph(d3.selectAll('#graph2'))
     .sections(d3.selectAll('#sections2 > div'))
