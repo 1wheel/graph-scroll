@@ -5,8 +5,7 @@
   "keywords": [
     "d3",
     "d3-module",
-    "annotation",
-    "drag"
+    "scroll"
   ],
   "license": "MIT",
   "main": "graph-scroll.js",
