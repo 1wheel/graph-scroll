@@ -13,12 +13,13 @@ export function graphScroll(){
       container = d3.select('body'),
       containerStart = 0,
       belowStart,
-      eventId = Math.random()
+      eventId = Math.random(),
+      offset = 0
 
   function reposition(){
     var i1 = 0
     sectionPos.forEach(function(d, i){
-      if (d < pageYOffset - containerStart + 200) i1 = i
+      if (d < pageYOffset - containerStart + offset) i1 = i
     })
     i1 = Math.min(n - 1, i1)
     if (i != i1){
@@ -135,6 +136,13 @@ export function graphScroll(){
   rv.on = function() {
     var value = dispatch.on.apply(dispatch, arguments);
     return value === dispatch ? rv : value;
+  }
+  
+  rv.offset = function(_x) {
+    if(!_x) return rv
+    
+    offset = _x
+    return rv
   }
 
   return rv
