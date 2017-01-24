@@ -88,3 +88,11 @@ As the bottom of the container approaches the top of the page, the graph is clas
   margin-left: 240px;
 }
 ```
+
+To adjust the amount of pixels before a new section is triggered, update `offset` :
+
+```
+graphScroll.offset(300)
+```
+
+Defaults to 200 pixels. 
