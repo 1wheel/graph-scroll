@@ -54,10 +54,10 @@ function graphScroll(){
       sectionPos.push(this.getBoundingClientRect().top -  startPos) })
 
     var containerBB = container.node().getBoundingClientRect()
-    var graphBB = graph.node().getBoundingClientRect()
+    var graphHeight = graph.node() ? graph.node().getBoundingClientRect().height : 0
 
     containerStart = containerBB.top + pageYOffset
-    belowStart = containerBB.bottom - graphBB.height  + pageYOffset
+    belowStart = containerBB.bottom - graphHeight + pageYOffset
   }
 
   function keydown() {
