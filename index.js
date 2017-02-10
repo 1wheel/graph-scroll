@@ -139,7 +139,7 @@ export function graphScroll(){
   }
   
   rv.offset = function(_x) {
-    if(!_x) return rv
+    if(!_x) return offset
     
     offset = _x
     return rv
