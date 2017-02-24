@@ -11,6 +11,7 @@
   "main": "graph-scroll.js",
   "author": "Adam Pearce",
   "jsnext:main": "index",
+  "module": "index",
   "homepage": "http://1wheel.github.io/graph-scroll/",
   "repository": {
     "type": "git",
