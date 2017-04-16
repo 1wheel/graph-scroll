@@ -15,11 +15,11 @@ d3.graphScroll()
 The top most element scrolled fully into view is classed `graph-scroll-active`. This makes it easy to highlight the active section with css: 
 
 ```
-# sections > div{
+#sections > div{
 	opacity: .3
 } 
 
-# sections div.graph-scroll-active{
+#sections div.graph-scroll-active{
 	opacity: 1;
 }
 ```
@@ -55,23 +55,23 @@ With a little bit of css, the graph element snaps to the top of the page while t
 
 
 ```
-# container{
+#container{
   position: relative;
   overflow: auto;
 }
 
-# sections{
+#sections{
   width: 200px;
   float: left;
 }
 
-# graph{
+#graph{
   width: 600px;
   float: left;
   margin-left: 40px;
 }
 
-# graph.graph-scroll-fixed{
+#graph.graph-scroll-fixed{
   position: fixed;
   top: 0px;
   margin-left: 240px;
@@ -82,7 +82,7 @@ With a little bit of css, the graph element snaps to the top of the page while t
 As the bottom of the container approaches the top of the page, the graph is classed with `graph-scroll-below`. A little more css allows the graph slide out of view gracefully:
 
 ```
-# graph.graph-scroll-below{
+#graph.graph-scroll-below{
   position: absolute;
   bottom: 0px;
   margin-left: 240px;
