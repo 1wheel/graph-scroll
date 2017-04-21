@@ -84,7 +84,25 @@ As the bottom of the container approaches the top of the page, the container is 
 }
 ```
 
-To adjust the amount of pixels before a new section is triggered, update `offset` :
+On mobile centering the graph and sections while adding a some padding for the first slide is a good option:
+
+```
+@media (max-width: 925px)  {
+  #graph{
+    width: 100%;
+    transform: translate(-50%, 0);
+    margin-left: 50%;
+  }
+
+  #sections{
+    position: relative;
+    margin: 0px auto;
+    padding-top: 400px;
+  }
+}
+```
+
+Adjust the amount of pixels before a new section is triggered is also helpful on mobile:
 
 ```
 graphScroll.offset(300)
