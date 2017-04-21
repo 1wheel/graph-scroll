@@ -80,7 +80,12 @@ function graphScroll(){
       default: return
     }
 
-    var i1 = Math.max(0, Math.min(i + delta, n - 1));
+    scrollToIndex(i + delta)
+  }
+
+  function scrollToIndex(i1){
+    var i1 = Math.max(0, Math.min(i1, n - 1));
+
     if (i1 == i) return // let browser handle scrolling past last section
     d3.select(document.documentElement)
         .interrupt()
@@ -93,6 +98,22 @@ function graphScroll(){
 
     d3.event.preventDefault();
   }
+
+  var touchStartY, touchStartI =  0
+  d3.select('body').on('touchstart', function(){
+    touchStartY = pageYOffset
+    touchStartI = i
+  })
+
+  d3.select('body').on('touchend', function(){
+    console.log(touchStartY - pageYOffset)
+
+    scrollToIndex(i - Math.sign(touchStartY - pageYOffset))
+
+    return true
+  })
+
+
 
 
   var rv ={};
