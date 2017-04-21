@@ -103,7 +103,7 @@ function graphScroll(){
   d3.select('body').on('touchstart', function(){
     touchStartY = pageYOffset
     touchStartI = i
-  })
+  }, {passive: false})
 
   d3.select('body').on('touchend', function(){
     console.log(touchStartY - pageYOffset)
@@ -111,7 +111,7 @@ function graphScroll(){
     scrollToIndex(i - Math.sign(touchStartY - pageYOffset))
 
     return true
-  })
+  }, {passive: false, cancelable: true})
 
 
 
