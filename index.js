@@ -126,10 +126,7 @@ export function graphScroll(){
         .on('keydown.gscroll' + eventId, keydown)
     
     resize()
-    d3.timer(function() {
-      reposition()
-      return true
-    })
+    d3.timer(reposition)
 
     return rv
   }

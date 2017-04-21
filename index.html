@@ -24,7 +24,7 @@ body{
   margin-bottom: 200px;
 }
 #sections > div:last-child{
-  margin-bottom: 0px;
+  margin-bottom: 30px;
 }
 #sections > div.graph-scroll-active{
   opacity: 1;
@@ -51,9 +51,8 @@ body{
 @media (max-width: 925px)  {
   #graph{
     width: 100%;
-    left: 50%;
     transform: translate(-50%, 0);
-    margin-left: 0px !important;
+    margin-left: 50%;
   }
 
   #sections{
@@ -204,11 +203,20 @@ d3.graphScroll()
     <div>
       <h3>Mobile</h3>
 
-      On mobile,  <span class='mono'>graph-scroll-below</span>. A little more css allows the graph slide out of view gracefully:
+      On mobile center the graph and sections while adding a some padding for the first slide is a good option: 
 <pre>
-.graph-scroll-below #graph{
-  position: absolute;
-  bottom: 0px;
+@media (max-width: 925px)  {
+  #graph{
+    width: 100%;
+    transform: translate(-50%, 0);
+    margin-left: 50%;
+  }
+
+  #sections{
+    position: relative;
+    margin: 0px auto;
+    padding-top: 400px;
+  }
 }
 </pre>
     </div>
@@ -267,7 +275,7 @@ var circle = svg.append('circle')
 
 var isMobile = innerWidth < 915 
 
-var colors = ['orange', 'purple', 'steelblue', 'black']
+var colors = ['orange', 'purple', 'steelblue', 'pink', 'black']
 var gs = d3.graphScroll()
     .container(d3.select('#container'))
     .graph(d3.selectAll('#graph'))
@@ -303,6 +311,8 @@ var gs2 = d3.graphScroll()
         [[w/4, h/4], [w*3/4, h/4],  [w*3/4, h*3/4], [w/4, h*3/4]],
         [[0, 0],     [w*3/4, h/4],  [w*3/4, h*3/4], [w/4, h*3/4]],
         [[w/2, h/2], [w, h/4],      [w, h],         [w/4, h]],
+        [[w/2, h/2], [w, h/4],      [w, h],         [w/4, h]],
+        [[w/2, h/2], [w, h/2],      [0, h],         [w/4, h/2]],
         [[w/2, h/2], [0, h/4],      [0, h/2],         [w/4, 0]],
       ].map(function(d){ return 'M' + d.join(' L ') })
 
@@ -313,6 +323,6 @@ var gs2 = d3.graphScroll()
     })
 
 d3.select('#source')
-    .styles({'margin-bottom': window.innerHeight - 400 + 'px', padding: '100px'})
+    .styles({'margin-bottom': window.innerHeight - 300 + 'px', padding: '100px'})
 
 </script>

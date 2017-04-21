@@ -29,13 +29,12 @@ To support headers and intro images/text, we use a container element containing 
 ```
 <h1>Page Title</div>
 <div id='container'>
-	<div id='sections'>
-		<div>Section 0</div>
-		<div>Section 1</div>
-		<div>Section 2</div>
-	</div>
-
-	<div id='graph'></div>
+  <div id='graph'></div>
+  <div id='sections'>
+    <div>Section 0</div>
+    <div>Section 1</div>
+    <div>Section 2</div>
+  </div>
 </div>
 <h1>Footer</h1>
 ```
@@ -51,41 +50,37 @@ d3.graphScroll()
 
 ```
 
-With a little bit of css, the graph element snaps to the top of the page while the text scrolls by. 
+When the graph starts to scroll out of view, the container is classed with graph-scroll-fixed. With a little bit of css, the graph element snaps to the top of the page while the text scrolls by.
 
 
 ```
 #container{
   position: relative;
-  overflow: auto;
 }
 
 #sections{
-  width: 200px;
-  float: left;
+  width: 340px;
 }
 
 #graph{
-  width: 600px;
-  float: left;
-  margin-left: 40px;
-}
-
-#graph.graph-scroll-fixed{
-  position: fixed;
+  width: 500px;
+  margin-left: 380px;
+  position: absolute;
   top: 0px;
-  margin-left: 240px;
+}
+
+.graph-scroll-fixed #graph{
+  position: fixed;
 }
 ```
 
 
-As the bottom of the container approaches the top of the page, the graph is classed with `graph-scroll-below`. A little more css allows the graph slide out of view gracefully:
+As the bottom of the container approaches the top of the page, the container is classed with `graph-scroll-below`. A little more css allows the graph slide out of view gracefully:
 
 ```
-#graph.graph-scroll-below{
+.graph-scroll-below #graph{
   position: absolute;
   bottom: 0px;
-  margin-left: 240px;
 }
 ```
 
