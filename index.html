@@ -312,10 +312,10 @@ var gs2 = d3.graphScroll()
         [[0, 0],     [w*3/4, h/4],  [w*3/4, h*3/4], [w/4, h*3/4]],
         [[w/2, h/2], [w, h/4],      [w, h],         [w/4, h]],
         [[w/2, h/2], [w, h/4],      [w, h],         [w/4, h]],
-        [[w/2, h/2], [w, h/2],      [0, h],         [w/4, h/2]],
+        [[w/2, h/2], [w, h/2],      [0, 0],         [w/4, h/2]],
         [[w/2, h/2], [0, h/4],      [0, h/2],         [w/4, 0]],
       ].map(function(d){ return 'M' + d.join(' L ') })
-
+      
 
       path.transition().duration(1000)
           .attr('d', dArray[i])

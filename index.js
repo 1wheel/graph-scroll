@@ -22,13 +22,6 @@ export function graphScroll(){
       if (d < pageYOffset - containerStart + offset) i1 = i
     })
     i1 = Math.min(n - 1, i1)
-    if (i != i1){
-      sections.classed('graph-scroll-active', function(d, i){ return i === i1 })
-
-      dispatch.call('active', null, i1)
-
-      i = i1
-    }
 
     var isBelow1 = pageYOffset > belowStart
     if (isBelow != isBelow1){
@@ -39,6 +32,16 @@ export function graphScroll(){
     if (isFixed != isFixed1){
       isFixed = isFixed1
       container.classed('graph-scroll-fixed', isFixed)
+    }
+
+    if (isBelow) i1 = n - 1
+
+    if (i != i1){
+      sections.classed('graph-scroll-active', function(d, i){ return i === i1 })
+
+      dispatch.call('active', null, i1)
+
+      i = i1
     }
   }
 
