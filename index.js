@@ -77,6 +77,7 @@ export function graphScroll(){
     }
 
     var i1 = Math.max(0, Math.min(i + delta, n - 1))
+    if (i1 == i) return // let browser handle scrolling past last section
     d3.select(document.documentElement)
         .interrupt()
       .transition()
