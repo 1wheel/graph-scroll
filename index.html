@@ -21,9 +21,11 @@ body{
 #sections > div{
   background: white;
   opacity: .2;
-  margin-bottom: 500px;
+  margin-bottom: 200px;
 }
-
+#sections > div:last-child{
+  margin-bottom: 0px;
+}
 #sections > div.graph-scroll-active{
   opacity: 1;
 }
@@ -56,8 +58,8 @@ body{
 
   #sections{
     position: relative;
-    z-index: 10;
     margin: 0px auto;
+    padding-top: 400px;
   }
 
   #sections div{
@@ -65,10 +67,7 @@ body{
     padding: 10px;
     border: 1px solid;
     max-width: 400px;
-  }
-
-  #sections{
-    padding-top: 400px;
+    margin-bottom: 500px;
   }
 }
 
@@ -132,53 +131,49 @@ d3.graphScroll()
       <h3>Headers and footers</h3>
       To support headers and intro images/text, the explanatory text and graphic are wrapped with a container element:    
 <pre>
-  &lt;h1&gt;Page Title&lt;/div&gt;
-  &lt;div id='container'&gt;
-    &lt;div id='sections'&gt;
-      &lt;div&gt;Section 0&lt;/div&gt;
-      &lt;div&gt;Section 1&lt;/div&gt;
-      &lt;div&gt;Section 2&lt;/div&gt;
-    &lt;/div&gt;
-
-    &lt;div id='graph'&gt;&lt;/div&gt;
+&lt;h1&gt;Page Title&lt;/div&gt;
+&lt;div id='container'&gt;
+  &lt;div id='graph'&gt;&lt;/div&gt;
+  &lt;div id='sections'&gt;
+    &lt;div&gt;Section 0&lt;/div&gt;
+    &lt;div&gt;Section 1&lt;/div&gt;
+    &lt;div&gt;Section 2&lt;/div&gt;
   &lt;/div&gt;
-  &lt;h1&gt;Footer&lt;/h1&gt;
+&lt;/div&gt;
+&lt;h1&gt;Footer&lt;/h1&gt;
 </pre>
 
     and passed to <span class='mono'>graphScroll</span>
 
 <pre>
-  d3.graphScroll()
-    .graph(d3.selectAll('#graph'))
-    .container(d3.select('#container'))
+d3.graphScroll()
+  .graph(d3.select('#graph'))
+  .container(d3.select('#container'))
 <pre>
     </div>
 
     <div>
       <h3>Sticky graph</h3>
-      When the graph scrolls out of view, it is classed with <span class='mono'>graph-scroll-fixed</span>. With a little bit of css, the graph element snaps to the top of the page while the text scrolls by. 
+      When the graph starts to scroll out of view, the container is classed with <span class='mono'>graph-scroll-fixed</span>. With a little bit of css, the graph element snaps to the top of the page while the text scrolls by. 
 <pre>
-  #container{
-    position: relative;
-    overflow: auto;
-  }
+#container{
+  position: relative;
+}
 
-  #sections{
-    width: 200px;
-    float: left;
-  }
+#sections{
+  width: 340px;
+}
 
-  #graph{
-    width: 600px;
-    float: left;
-    margin-left: 40px;
-  }
+#graph{
+  width: 500px;
+  margin-left: 380px;
+  position: absolute;
+  top: 0px;
+}
 
-  #graph.graph-scroll-fixed{
-    position: fixed;
-    top: 0px;
-    margin-left: 240px;
-  }
+.graph-scroll-fixed #graph{
+  position: fixed;
+}
 </pre>
     </div>
 
@@ -199,11 +194,22 @@ d3.graphScroll()
 
       As the bottom of the container approaches the top of the page, the graph is classed with <span class='mono'>graph-scroll-below</span>. A little more css allows the graph slide out of view gracefully:
 <pre>
-  #graph.graph-scroll-below{
-    position: absolute;
-    bottom: 0px;
-    margin-left: 240px;
-  }
+.graph-scroll-below #graph{
+  position: absolute;
+  bottom: 0px;
+}
+</pre>
+    </div>
+
+    <div>
+      <h3>Mobile</h3>
+
+      On mobile,  <span class='mono'>graph-scroll-below</span>. A little more css allows the graph slide out of view gracefully:
+<pre>
+.graph-scroll-below #graph{
+  position: absolute;
+  bottom: 0px;
+}
 </pre>
     </div>
 
@@ -234,7 +240,7 @@ d3.graphScroll()
       <h3>Todos</h3>
       <p>- Simple examples
       <p>- Self explanatory graphics
-      <p>- Expose scroll-to functionality 
+      <p>- Swiper 
     </div>
   </div>
 
