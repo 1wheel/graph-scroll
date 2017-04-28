@@ -1,6 +1,6 @@
 {
   "name": "graph-scroll",
-  "version": "0.0.8",
+  "version": "1.0.0",
   "description": "experiments using scrolling instead of steppers",
   "keywords": [
     "d3",
@@ -20,7 +20,7 @@
   "scripts": {
     "pretest": "rollup -f umd -n d3 -g d3:d3 -o graph-scroll.js -- index.js",
     "test": "echo 'no tests'",
-    "prepublish": "npm run test",
+    "prepublish": "npm run pretest",
     "postpublish": "zip -j graph-scroll.zip -- LICENSE README.md graph-scroll.js"
   },
   "devDependencies": {
