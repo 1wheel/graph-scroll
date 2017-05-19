@@ -282,9 +282,9 @@ function render(){
   var gs = d3.graphScroll()
       .container(d3.select('#container'))
       .graph(d3.selectAll('#graph'))
+      .eventId('uniqueId1')
       .sections(d3.selectAll('#sections > div'))
       // .offset(innerWidth < 900 ? innerHeight - 30 : 200)
-      .eventId('uniqueId1')
       .on('active', function(i){
         var pos = [ {cx: width - r, cy: r},
                     {cx: r,         cy: r},
@@ -307,8 +307,8 @@ function render(){
   var gs2 = d3.graphScroll()
       .container(d3.select('.container-2'))
       .graph(d3.selectAll('.container-2 #graph'))
-      .sections(d3.selectAll('.container-2 #sections > div'))
       .eventId('uniqueId1')
+      .sections(d3.selectAll('.container-2 #sections > div'))
       .on('active', function(i){
         var h = height
         var w = width
