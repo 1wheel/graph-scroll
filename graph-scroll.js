@@ -47,6 +47,13 @@ function graphScroll(){
 
       i = i1;
     }
+    
+    var pos = pageYOffset - 10 - containerStart;
+    var prevTop = sectionPos[i];
+    var nextTop = (i+1<sectionPos.length?sectionPos[i+1]:(belowStart-containerStart)) - 200 ;
+    var progress = (pos - prevTop) / (nextTop - prevTop);
+    if(progress>=0 && progress <=1)
+      dispatch.scroll(i, progress);
   }
 
   function resize(){
