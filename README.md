@@ -109,3 +109,9 @@ graphScroll.offset(300)
 ```
 
 Defaults to 200 pixels. 
+
+To update or replace a graphScroll instance, pass a string to `eventId` to remove the old event listeners: 
+
+```
+graphScroll.eventId('uniqueId1')
+```
