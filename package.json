@@ -24,9 +24,7 @@
     "postpublish": "zip -j graph-scroll.zip -- LICENSE README.md graph-scroll.js"
   },
   "devDependencies": {
-    "rollup": "0.27",
-    "tape": "4",
-    "uglify-js": "2"
+    "rollup": "0.27"
   },
   "dependencies": {
     "d3": "4"
