@@ -10,6 +10,15 @@ body{
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
+h1{
+  margin: 50px;
+}
+
+h1, h3{
+  text-align: center;
+}
+
+
 #container{
   position: relative;
 }
@@ -35,40 +44,32 @@ body{
   width: 500px;
   position: sticky;
   top: 0px;
-  /*float: right;*/
+  float: right;
 }
 
-/*.graph-scroll-fixed #graph{
-  position: fixed;
-  top: 0px;
-}
-
-.graph-scroll-below #graph{
-  bottom: 0px;
-  top: auto;
-}
-*/
 @media (max-width: 925px)  {
   #graph{
     width: 100%;
-    transform: translate(-50%, 0);
-    margin-left: 50%;
+    margin-left: 0px;
     float: none;
   }
 
   #sections{
+    width: auto;
     position: relative;
     margin: 0px auto;
-    padding-top: 400px;
-    left: 2px;
   }
 
   #sections div{
     background: rgba(255,255,255,.5);
     padding: 10px;
-    border: 1px solid;
-    max-width: 400px;
-    margin-bottom: 500px;
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+    margin-bottom: 80vh;
+  }
+
+  pre{
+    overflow: hidden;
   }
 
   h1{
@@ -76,13 +77,6 @@ body{
   }
 }
 
-h1{
-  margin: 50px;
-}
-
-h1, h3{
-  text-align: center;
-}
 
 circle{
   fill: steelblue;
@@ -273,9 +267,16 @@ function render(){
   if (oldWidth == innerWidth) return
   oldWidth = innerWidth
 
-  var width = d3.select('#graph').node().offsetWidth,
-      height = innerWidth > 925 ? width : innerHeight*.7,
-      r = 40
+  var width = height = d3.select('#graph').node().offsetWidth
+  var r = 40
+
+
+  if (innerWidth <= 925){
+    width = innerWidth
+    height = innerHeight*.7
+  }
+
+  // return console.log(width, height)
 
   var svg = d3.select('#graph').html('')
     .append('svg')
