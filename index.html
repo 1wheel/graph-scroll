@@ -33,12 +33,12 @@ body{
 #graph{
   margin-left: 40px;
   width: 500px;
-  position: absolute;
+  position: sticky;
   top: 0px;
-  margin-left: 380px;
+  /*float: right;*/
 }
 
-.graph-scroll-fixed #graph{
+/*.graph-scroll-fixed #graph{
   position: fixed;
   top: 0px;
 }
@@ -47,18 +47,20 @@ body{
   bottom: 0px;
   top: auto;
 }
-
+*/
 @media (max-width: 925px)  {
   #graph{
     width: 100%;
     transform: translate(-50%, 0);
     margin-left: 50%;
+    float: none;
   }
 
   #sections{
     position: relative;
     margin: 0px auto;
     padding-top: 400px;
+    left: 2px;
   }
 
   #sections div{
@@ -67,6 +69,10 @@ body{
     border: 1px solid;
     max-width: 400px;
     margin-bottom: 500px;
+  }
+
+  h1{
+    margin: 10px;
   }
 }
 

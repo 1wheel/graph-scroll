@@ -26,7 +26,6 @@
   "devDependencies": {
     "rollup": "0.27",
     "tape": "4",
-    "uglify-js": "2"
   },
   "dependencies": {
     "d3": "4"
