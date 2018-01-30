@@ -14,7 +14,7 @@ h1{
   margin: 50px;
 }
 
-h1, h3{
+h1{
   text-align: center;
 }
 
@@ -93,9 +93,9 @@ svg{
 </style>
 
 <h1><a href='https://github.com/1wheel/graph-scroll'>graph-scroll.js</a></h1>
-<h3>Simple scrolling events for d3 graphics.</h3>
+<h1>Simple scrolling events for d3 graphics</h1>
 
-<div id='container'>
+<div id='container' class='container-1'>
   <div id='graph'></div>
   <div id='sections'>
     <div>
@@ -153,7 +153,7 @@ d3.graphScroll()
 
     <div>
       <h3>Sticky graph</h3>
-      When the graph starts to scroll out of view, the container is classed with <span class='mono'>graph-scroll-fixed</span>. With a little bit of css, the graph element snaps to the top of the page while the text scrolls by. 
+      When the graph starts to scroll out of view, <span class='mono'>postiion: sticky</span> keeps the graph element stuck to the top of the page while the text scrolls by.
 <pre>
 #container{
   position: relative;
@@ -164,14 +164,11 @@ d3.graphScroll()
 }
 
 #graph{
+  margin-left: 40px;
   width: 500px;
-  margin-left: 380px;
-  position: absolute;
+  position: sticky;
   top: 0px;
-}
-
-.graph-scroll-fixed #graph{
-  position: fixed;
+  float: right;
 }
 </pre>
     </div>
@@ -181,25 +178,13 @@ d3.graphScroll()
 </div>
 
 <h1>
-  Multiple graphs
+  Multiple graphs work too!
 </h1>
 
 <div id='container' class='container-2'>
   <div id='graph'></div>
 
   <div id='sections'>
-    <div>
-      <h3>Scroll away</h3>
-
-      As the bottom of the container approaches the top of the page, the graph is classed with <span class='mono'>graph-scroll-below</span>. A little more css allows the graph slide out of view gracefully:
-<pre>
-.graph-scroll-below #graph{
-  position: absolute;
-  bottom: 0px;
-}
-</pre>
-    </div>
-
     <div>
       <h3>Mobile</h3>
 
@@ -255,7 +240,7 @@ d3.graphScroll()
 
 </div>
 
-<h3 id='source'><a href='https://github.com/1wheel/graph-scroll'>contribute/view on github</a></h3>
+<h1 id='source'><a href='https://github.com/1wheel/graph-scroll'>contribute/view source on github</a></h1>
 
 
 <script src="d3v4+jetpack.js"></script>
@@ -287,10 +272,10 @@ function render(){
 
   var colors = ['orange', 'purple', 'steelblue', 'pink', 'black']
   var gs = d3.graphScroll()
-      .container(d3.select('#container'))
-      .graph(d3.selectAll('#graph'))
+      .container(d3.select('.container-1'))
+      .graph(d3.selectAll('container-1 #graph'))
       .eventId('uniqueId1')  // namespace for scroll and resize events
-      .sections(d3.selectAll('#sections > div'))
+      .sections(d3.selectAll('.container-1 #sections > div'))
       // .offset(innerWidth < 900 ? innerHeight - 30 : 200)
       .on('active', function(i){
         var pos = [ {cx: width - r, cy: r},

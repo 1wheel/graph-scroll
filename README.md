@@ -50,8 +50,7 @@ d3.graphScroll()
 
 ```
 
-When the graph starts to scroll out of view, the container is classed with graph-scroll-fixed. With a little bit of css, the graph element snaps to the top of the page while the text scrolls by.
-
+When the graph starts to scroll out of view, postiion: sticky keeps the graph element stuck to the top of the page while the text scrolls by.
 
 ```
 #container{
@@ -63,26 +62,14 @@ When the graph starts to scroll out of view, the container is classed with graph
 }
 
 #graph{
+  margin-left: 40px;
   width: 500px;
-  margin-left: 380px;
-  position: absolute;
+  position: sticky;
   top: 0px;
-}
-
-.graph-scroll-fixed #graph{
-  position: fixed;
+  float: right;
 }
 ```
 
-
-As the bottom of the container approaches the top of the page, the container is classed with `graph-scroll-below`. A little more css allows the graph slide out of view gracefully:
-
-```
-.graph-scroll-below #graph{
-  position: absolute;
-  bottom: 0px;
-}
-```
 
 On mobile centering the graph and sections while adding a some padding for the first slide is a good option:
 
@@ -90,8 +77,8 @@ On mobile centering the graph and sections while adding a some padding for the f
 @media (max-width: 925px)  {
   #graph{
     width: 100%;
-    transform: translate(-50%, 0);
-    margin-left: 50%;
+    margin-left: 0px;
+    float: none;
   }
 
   #sections{
