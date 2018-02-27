@@ -54,7 +54,8 @@
       var startPos
       sections.each(function(d, i){
         if (!i) startPos = this.getBoundingClientRect().top
-        sectionPos.push(this.getBoundingClientRect().top -  startPos) })
+        sectionPos.push(this.getBoundingClientRect().top -  startPos) 
+      })
 
       var containerBB = container.node().getBoundingClientRect()
       var graphHeight = graph.node() ? graph.node().getBoundingClientRect().height : 0
