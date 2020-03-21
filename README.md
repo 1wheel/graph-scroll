@@ -50,7 +50,7 @@ d3.graphScroll()
 
 ```
 
-When the graph starts to scroll out of view, postiion: sticky keeps the graph element stuck to the top of the page while the text scrolls by.
+When the graph starts to scroll out of view, `position: sticky` keeps the graph element stuck to the top of the page while the text scrolls by.
 
 ```
 #container{
@@ -89,13 +89,11 @@ On mobile centering the graph and sections while adding a some padding for the f
 }
 ```
 
-Adjust the amount of pixels before a new section is triggered is also helpful on mobile:
+Adjust the amount of pixels before a new section is triggered is also helpful on mobile (Defaults to 200 pixels):
 
 ```
 graphScroll.offset(300)
 ```
-
-Defaults to 200 pixels. 
 
 To update or replace a graphScroll instance, pass a string to `eventId` to remove the old event listeners: 
 
